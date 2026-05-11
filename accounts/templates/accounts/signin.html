@@ -1,14 +1,10 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ميثاق — تسجيل الدخول</title>
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
-</head>
-<body class="auth-body">
 
+{% block title %}ميثاق — تسجيل الدخول{% endblock %}
+
+{% block content %}
+<div class="auth-body">
     <div class="auth-wrapper">
 
         <!-- Sidebar -->
@@ -30,7 +26,6 @@
         <!-- Form -->
         <div class="auth-form-side">
 
-            <!-- Messages -->
             {% if messages %}
                 {% for message in messages %}
                     <div class="alert {{ message.extra_tags }}">{{ message }}</div>
@@ -44,12 +39,11 @@
                 {% csrf_token %}
 
                 <div class="auth-field">
-                     <i class="bi bi-envelope auth-field-icon"></i>
+                    <i class="bi bi-envelope auth-field-icon"></i>
                     <input type="email" name="email" placeholder="البريد الإلكتروني" required>
                 </div>
 
                 <div class="auth-field">
-                   
                     <i class="bi bi-lock auth-field-icon"></i>
                     <input type="password" name="password" placeholder="كلمة المرور" required>
                 </div>
@@ -66,8 +60,6 @@
             </p>
 
         </div>
-
     </div>
-
-</body>
-</html>
+</div>
+{% endblock %}
