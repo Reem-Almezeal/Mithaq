@@ -39,6 +39,17 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
+    'accounts',
+    'audit',
+    'blockchain',
+    'contracts',
+    'dashboard',
+    'milestones',
+    'notifications',
+    'payments',
+    'signatures',
+    'subscriptions',
+    'wallet',
 ]
 
 MIDDLEWARE = [
@@ -118,7 +129,6 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 MEDIA_URL = '/media/'

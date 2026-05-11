@@ -1,0 +1,369 @@
+{% extends "base.html" %}
+
+{% block title %}ميثاق — وثّق اتفاقاتك. احمِ حقوقك.{% endblock %}
+
+{% block content %}
+
+<!-- ═══════════════════════════════════════════════
+     HERO SECTION
+════════════════════════════════════════════════ -->
+<section class="bg-brand-bg min-h-[90vh] flex flex-col items-center justify-center text-center px-4 py-20">
+  <div class="max-w-3xl mx-auto">
+
+    <!-- Eyebrow tag -->
+    <span class="inline-block mb-6 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide
+                 bg-black text-white">
+      للمستقلين · للشركات الصغيرة · للسوق السعودي
+    </span>
+
+    <!-- Headline -->
+    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-black leading-tight mb-6">
+      وثّق اتفاقاتك.<br/>
+      <span class="text-brand-gold">احمِ حقوقك.</span>
+    </h1>
+
+    <!-- Subheadline -->
+    <p class="text-lg sm:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto mb-10">
+      منصة ميثاق تحوّل اتفاقاتك الرقمية إلى سجلات غير قابلة للتلاعب —
+      بلغة عربية واضحة، بدون أي خبرة تقنية.
+    </p>
+
+    <!-- CTA Buttons -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
+      <a href="#"
+         class="w-full sm:w-auto inline-flex items-center justify-center gap-2
+                px-8 py-3.5 rounded-xl text-base font-bold text-white
+                bg-brand-gold hover:bg-brand-gold-dark active:scale-95
+                transition-all duration-150 shadow-md">
+        ابدأ مجاناً
+        <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </a>
+      <a href="#how-it-works"
+         class="w-full sm:w-auto inline-flex items-center justify-center gap-2
+                px-8 py-3.5 rounded-xl text-base font-bold text-black
+                border-2 border-black hover:bg-black hover:text-white active:scale-95
+                transition-all duration-150">
+        كيف يعمل؟
+      </a>
+    </div>
+
+    <!-- Trust Badges -->
+    <div class="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
+      <div class="flex flex-col items-center gap-1.5">
+        <div class="w-12 h-12 rounded-full bg-black flex items-center justify-center">
+          <!-- Chain icon -->
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101
+                     m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+          </svg>
+        </div>
+        <span class="text-xs font-semibold text-gray-700">سجل موثوق</span>
+      </div>
+
+      <div class="w-px h-10 bg-gray-200 hidden sm:block"></div>
+
+      <div class="flex flex-col items-center gap-1.5">
+        <div class="w-12 h-12 rounded-full bg-black flex items-center justify-center">
+          <!-- Signature icon -->
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536
+                     L6.5 21.036H3v-3.572L16.732 3.732z"/>
+          </svg>
+        </div>
+        <span class="text-xs font-semibold text-gray-700">توقيع رقمي</span>
+      </div>
+
+      <div class="w-px h-10 bg-gray-200 hidden sm:block"></div>
+
+      <div class="flex flex-col items-center gap-1.5">
+        <div class="w-12 h-12 rounded-full bg-black flex items-center justify-center">
+          <!-- Shield icon -->
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944
+                     a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591
+                     3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622
+                     0-1.042-.133-2.052-.382-3.016z"/>
+          </svg>
+        </div>
+        <span class="text-xs font-semibold text-gray-700">سجل لا يُمحى</span>
+      </div>
+
+      <div class="w-px h-10 bg-gray-200 hidden sm:block"></div>
+
+      <div class="flex flex-col items-center gap-1.5">
+        <div class="w-12 h-12 rounded-full bg-black flex items-center justify-center">
+          <!-- Document icon -->
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586
+                     a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+        </div>
+        <span class="text-xs font-semibold text-gray-700">عقود واضحة</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     PROBLEM SECTION
+════════════════════════════════════════════════ -->
+<section class="bg-white py-20 px-4">
+  <div class="max-w-5xl mx-auto">
+
+    <!-- Section Header -->
+    <div class="text-center mb-12">
+      <p class="text-sm font-semibold text-brand-gold uppercase tracking-widest mb-3">المشكلة</p>
+      <h2 class="text-3xl sm:text-4xl font-bold text-black">هل واجهت هذه المشاكل؟</h2>
+    </div>
+
+    <!-- Pain Point Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <!-- Card 1 -->
+      <div class="group relative bg-brand-bg rounded-2xl p-7 border border-gray-100
+                  hover:border-brand-red hover:shadow-lg transition-all duration-200 cursor-default">
+        <div class="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center mb-5
+                    group-hover:bg-red-100 transition-colors duration-200">
+          <svg class="w-6 h-6 text-brand-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8
+                     a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3
+                     13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold text-black mb-2">اتفاقيات ضاعت في واتساب</h3>
+        <p class="text-sm text-gray-500 leading-relaxed">
+          رسائل متناثرة، لا توثيق رسمي، ولا مرجع واضح عند الخلاف.
+        </p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="group relative bg-brand-bg rounded-2xl p-7 border border-gray-100
+                  hover:border-brand-red hover:shadow-lg transition-all duration-200 cursor-default">
+        <div class="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center mb-5
+                    group-hover:bg-red-100 transition-colors duration-200">
+          <svg class="w-6 h-6 text-brand-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343
+                     2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1
+                     c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold text-black mb-2">إنكار الدفع بعد تسليم العمل</h3>
+        <p class="text-sm text-gray-500 leading-relaxed">
+          أنهيت المشروع وسلّمت، ثم يتنكر العميل لالتزامه بالدفع.
+        </p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="group relative bg-brand-bg rounded-2xl p-7 border border-gray-100
+                  hover:border-brand-red hover:shadow-lg transition-all duration-200 cursor-default">
+        <div class="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center mb-5
+                    group-hover:bg-red-100 transition-colors duration-200">
+          <svg class="w-6 h-6 text-brand-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667
+                     1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0
+                     L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-bold text-black mb-2">تلاعب في بنود العقد</h3>
+        <p class="text-sm text-gray-500 leading-relaxed">
+          تغيير البنود بعد التوقيع بحجج واهية وادعاءات مضللة.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     HOW IT WORKS SECTION
+════════════════════════════════════════════════ -->
+<section id="how-it-works" class="bg-brand-bg py-20 px-4">
+  <div class="max-w-5xl mx-auto">
+
+    <!-- Section Header -->
+    <div class="text-center mb-14">
+      <p class="text-sm font-semibold text-brand-gold uppercase tracking-widest mb-3">الآلية</p>
+      <h2 class="text-3xl sm:text-4xl font-bold text-black">كيف يعمل ميثاق؟</h2>
+      <p class="mt-4 text-gray-500 text-base max-w-xl mx-auto">
+        ثلاث خطوات بسيطة تحمي اتفاقاتك إلى الأبد
+      </p>
+    </div>
+
+    <!-- Steps -->
+    <div class="relative">
+      <!-- Connector line (desktop) -->
+      <div class="hidden md:block absolute top-14 right-[16.5%] left-[16.5%] h-0.5 bg-gray-200 z-0"></div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
+
+        <!-- Step 1 -->
+        <div class="flex flex-col items-center text-center">
+          <div class="w-16 h-16 rounded-2xl bg-black flex items-center justify-center mb-5 shadow-md">
+            <span class="text-2xl font-bold text-white">١</span>
+          </div>
+          <h3 class="text-lg font-bold text-black mb-2">أنشئ العقد</h3>
+          <p class="text-sm text-gray-500 leading-relaxed max-w-xs">
+            اختر من قوالبنا الجاهزة، أضف الأطراف والمراحل والمبالغ بسهولة تامة.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="flex flex-col items-center text-center">
+          <div class="w-16 h-16 rounded-2xl bg-black flex items-center justify-center mb-5 shadow-md">
+            <span class="text-2xl font-bold text-white">٢</span>
+          </div>
+          <h3 class="text-lg font-bold text-black mb-2">وقّع رقمياً</h3>
+          <p class="text-sm text-gray-500 leading-relaxed max-w-xs">
+            يوقّع جميع الأطراف بنقرة واحدة من أي جهاز — بدون أوراق أو طابعات.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="flex flex-col items-center text-center">
+          <div class="w-16 h-16 rounded-2xl bg-black flex items-center justify-center mb-5 shadow-md">
+            <span class="text-2xl font-bold text-white">٣</span>
+          </div>
+          <h3 class="text-lg font-bold text-black mb-2">سجل لا يُمحى</h3>
+          <p class="text-sm text-gray-500 leading-relaxed max-w-xs">
+            كل خطوة مسجلة في سجل رقمي مشفّر لا يمكن لأحد التلاعب به أو إنكاره.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     FEATURES SECTION
+════════════════════════════════════════════════ -->
+<section class="bg-white py-20 px-4">
+  <div class="max-w-5xl mx-auto">
+
+    <!-- Section Header -->
+    <div class="text-center mb-12">
+      <p class="text-sm font-semibold text-brand-gold uppercase tracking-widest mb-3">المميزات</p>
+      <h2 class="text-3xl sm:text-4xl font-bold text-black">لماذا ميثاق؟</h2>
+    </div>
+
+    <!-- Feature Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+      <!-- Feature 1 -->
+      <div class="group flex gap-5 bg-brand-bg rounded-2xl p-7 border border-gray-100
+                  hover:border-black hover:shadow-md transition-all duration-200">
+        <div class="shrink-0 w-12 h-12 rounded-xl bg-black flex items-center justify-center
+                    group-hover:scale-110 transition-transform duration-200">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088
+                     9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-base font-bold text-black mb-1.5">واجهة عربية بالكامل</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">
+            صُمِّمت من البداية للمستخدم العربي — لا ترجمة، لا تعقيد.
+          </p>
+        </div>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="group flex gap-5 bg-brand-bg rounded-2xl p-7 border border-gray-100
+                  hover:border-black hover:shadow-md transition-all duration-200">
+        <div class="shrink-0 w-12 h-12 rounded-xl bg-black flex items-center justify-center
+                    group-hover:scale-110 transition-transform duration-200">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2
+                     2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-base font-bold text-black mb-1.5">سجل لا يُعدَّل</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">
+            عقودك محمية بتقنية تشفير متقدمة — لا أحد يستطيع التلاعب بها.
+          </p>
+        </div>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="group flex gap-5 bg-brand-bg rounded-2xl p-7 border border-gray-100
+                  hover:border-black hover:shadow-md transition-all duration-200">
+        <div class="shrink-0 w-12 h-12 rounded-xl bg-black flex items-center justify-center
+                    group-hover:scale-110 transition-transform duration-200">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002
+                     6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388
+                     6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0
+                     11-6 0v-1m6 0H9"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-base font-bold text-black mb-1.5">تنبيهات تلقائية للمواعيد</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">
+            تذكيرات فورية للمدفوعات والمواعيد النهائية — لا شيء يفوتك.
+          </p>
+        </div>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="group flex gap-5 bg-brand-bg rounded-2xl p-7 border border-gray-100
+                  hover:border-black hover:shadow-md transition-all duration-200">
+        <div class="shrink-0 w-12 h-12 rounded-xl bg-black flex items-center justify-center
+                    group-hover:scale-110 transition-transform duration-200">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 class="text-base font-bold text-black mb-1.5">مجاني للأفراد</h3>
+          <p class="text-sm text-gray-500 leading-relaxed">
+            ابدأ بدون بطاقة ائتمان — خطة مجانية كاملة للمستقلين الأفراد.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     BOTTOM CTA SECTION
+════════════════════════════════════════════════ -->
+<section class="bg-black py-20 px-4">
+  <div class="max-w-3xl mx-auto text-center">
+
+    <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4 leading-tight">
+      جاهز لحماية حقوقك؟
+    </h2>
+    <p class="text-gray-400 text-base mb-10 max-w-lg mx-auto">
+      انضم إلى آلاف المستقلين الذين يحمون اتفاقاتهم مع ميثاق — ابدأ في دقيقة واحدة.
+    </p>
+
+    <a href="#"
+       class="inline-flex items-center gap-3 px-10 py-4 rounded-xl text-base font-bold
+              text-black bg-brand-gold hover:bg-brand-gold-light active:scale-95
+              transition-all duration-150 shadow-lg">
+      أنشئ أول عقد مجاناً
+      <svg class="w-5 h-5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+      </svg>
+    </a>
+
+    <p class="mt-6 text-xs text-gray-600">·عقد مجاني للأفراد</p>
+  </div>
+</section>
+
+{% endblock %}
