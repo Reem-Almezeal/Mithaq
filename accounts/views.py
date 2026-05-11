@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpRequest
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
+
+from subscriptions.services.subscription_service import assign_free_plan
 from .models import User
 
 
@@ -41,7 +43,8 @@ def sign_up(request: HttpRequest):
             mobile=mobile,
             date_of_birth=date_of_birth or None,
         )
-
+        
+        assign_free_plan(user)  # Assign the Free plan to the new user
         login(request, user)
         messages.success(request, "تم إنشاء الحساب بنجاح", "alert-success")
         return redirect("dashboard:home")
