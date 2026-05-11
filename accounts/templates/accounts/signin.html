@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ميثاق — تسجيل الدخول</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body class="auth-body">
+
+    <div class="auth-wrapper">
+
+        <!-- Sidebar -->
+        <div class="auth-sidebar">
+            <div class="auth-logo">
+                <span>Mithaq</span>
+                <svg viewBox="0 0 16 16" width="16" height="16" fill="none">
+                    <polygon points="8,1 15,8 8,15 1,8" stroke="#C9A84C" stroke-width="1.5" fill="none"/>
+                </svg>
+            </div>
+            <div class="auth-watermark">
+                <svg viewBox="0 0 60 60" width="60" height="60" fill="none">
+                    <polygon points="30,5 55,30 30,55 5,30" stroke="#C9A84C" stroke-width="1.5" fill="none" opacity="0.3"/>
+                    <polygon points="30,12 48,30 30,48 12,30" stroke="#C9A84C" stroke-width="1" fill="none" opacity="0.2"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <div class="auth-form-side">
+
+            <!-- Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert {{ message.extra_tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            <h1 class="auth-title">تسجيل الدخول</h1>
+            <p class="auth-subtitle">Login to your account</p>
+
+            <form method="POST" action="{% url 'accounts:sign_in' %}">
+                {% csrf_token %}
+
+                <div class="auth-field">
+                     <i class="bi bi-envelope auth-field-icon"></i>
+                    <input type="email" name="email" placeholder="البريد الإلكتروني" required>
+                </div>
+
+                <div class="auth-field">
+                   
+                    <i class="bi bi-lock auth-field-icon"></i>
+                    <input type="password" name="password" placeholder="كلمة المرور" required>
+                </div>
+
+                <a href="#" class="auth-forgot">هل نسيت كلمة المرور؟</a>
+
+                <button type="submit" class="auth-btn">تسجيل الدخول</button>
+
+            </form>
+
+            <p class="auth-bottom-link">
+                لا تملك حساباً؟
+                <a href="{% url 'accounts:sign_up' %}">أنشئ حساباً جديداً</a>
+            </p>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
