@@ -133,6 +133,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [BASE_DIR / 'core' / 'static']
 
 
 MEDIA_URL = '/media/'
@@ -156,3 +157,6 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
+
+# Added by Remas — custom user model to replace Django's default auth.User
+AUTH_USER_MODEL = 'accounts.User'
