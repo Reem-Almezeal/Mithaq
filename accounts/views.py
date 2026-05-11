@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpRequest
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
-
+from django.db import transaction
 from subscriptions.services.subscription_service import assign_free_plan
 from .models import User
 
@@ -34,7 +34,8 @@ def sign_up(request: HttpRequest):
             return render(request, "accounts/signup.html")
 
         # إنشاء المستخدم
-        user = User.objects.create_user(
+        with transaction.atomic():
+         user = User.objects.create_user(
             email=email,
             password=password,
             first_name=first_name,
@@ -43,7 +44,7 @@ def sign_up(request: HttpRequest):
             mobile=mobile,
             date_of_birth=date_of_birth or None,
         )
-        
+
         assign_free_plan(user)  # Assign the Free plan to the new user
         login(request, user)
         messages.success(request, "تم إنشاء الحساب بنجاح", "alert-success")
