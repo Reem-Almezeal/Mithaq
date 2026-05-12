@@ -14,6 +14,8 @@ class AuditEvent(models.Model):
        USER_REGISTERED       = 'USER_REGISTERED',       'مستخدم سجّل'
        USER_LOGIN_FAILED     = 'USER_LOGIN_FAILED',     'فشل تسجيل دخول'
        USER_PROFILE_UPDATED  = 'USER_PROFILE_UPDATED',  'ملف شخصي حُدِّث'
+       # ── Subscription ────────────────────── (added by ghadi)
+       SUBSCRIPTION_ACTIVATED = 'SUBSCRIPTION_ACTIVATED', 'اشتراك فُعِّل'
        # ── Contract ──────────────────────────
        CONTRACT_CREATED      = 'CONTRACT_CREATED',      'عقد أُنشئ'
        CONTRACT_UPDATED      = 'CONTRACT_UPDATED',      'عقد حُدِّث'
