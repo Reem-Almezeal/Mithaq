@@ -16,8 +16,8 @@ urlpatterns = [
     path("blockchain/", include("blockchain.urls")),
     path("dashboard/", include("dashboard.urls")),
     path("notifications/", include("notifications.urls")),
-    path("payments/", include("payments.urls")),
-    path("subscriptions/", include("subscriptions.urls")),
+    path("api/payments/", include("payments.urls")),
+    path("api/subscriptions/", include("subscriptions.urls")),
     path("wallet/", include("wallet.urls")),
 ]
 
