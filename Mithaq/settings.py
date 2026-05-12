@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'signatures',
     'subscriptions',
     'wallet',
+    'templates_lib',
 ]
 
 MIDDLEWARE = [
