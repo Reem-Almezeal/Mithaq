@@ -1,0 +1,539 @@
+:root {
+    --mithaq-brown-dark: #2b160b;
+    --mithaq-brown: #7a431d;
+    --mithaq-brown-light: #b87945;
+    --mithaq-cream: #f8f3ec;
+    --mithaq-soft: #fffaf5;
+    --mithaq-border: #eadccc;
+    --mithaq-text: #24150d;
+    --mithaq-muted: #7b6b60;
+    --mithaq-success: #2f8f5b;
+    --mithaq-warning: #c77b19;
+    --mithaq-danger: #d64545;
+}
+
+.mithaq-dashboard {
+    padding: 28px;
+    min-height: 100vh;
+    color: var(--mithaq-text);
+}
+
+.mithaq-dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+.mithaq-page-label {
+    color: var(--mithaq-brown);
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.mithaq-dashboard-header h1 {
+    margin: 8px 0;
+    color: var(--mithaq-brown-dark);
+    font-size: 30px;
+}
+
+.mithaq-dashboard-header p {
+    margin: 0;
+    color: var(--mithaq-muted);
+}
+
+.mithaq-dashboard-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.mithaq-btn-primary,
+.mithaq-btn-secondary {
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.mithaq-btn-primary {
+    background: linear-gradient(135deg, var(--mithaq-brown), var(--mithaq-brown-light));
+    color: #fff;
+}
+
+.mithaq-btn-secondary {
+    border: 1px solid var(--mithaq-brown-light);
+    background: rgba(255, 255, 255, 0.8);
+    color: var(--mithaq-brown);
+}
+
+.mithaq-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.mithaq-stat-card,
+.mithaq-dashboard-card,
+.mithaq-contracts-section {
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid var(--mithaq-border);
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(43, 22, 11, 0.08);
+}
+
+.mithaq-stat-card {
+    position: relative;
+    overflow: hidden;
+    padding: 22px;
+}
+
+.mithaq-stat-card::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--mithaq-brown);
+}
+
+.mithaq-stat-success::after {
+    background: var(--mithaq-success);
+}
+
+.mithaq-stat-warning::after {
+    background: var(--mithaq-warning);
+}
+
+.mithaq-stat-danger::after {
+    background: var(--mithaq-danger);
+}
+
+.mithaq-stat-card span {
+    color: var(--mithaq-muted);
+    font-size: 14px;
+}
+
+.mithaq-stat-card h2 {
+    margin: 10px 0;
+    color: var(--mithaq-brown-dark);
+    font-size: 34px;
+}
+
+.mithaq-stat-card p {
+    margin: 0;
+    color: var(--mithaq-muted);
+    font-size: 13px;
+}
+
+.mithaq-dashboard-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.mithaq-secondary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.mithaq-dashboard-card {
+    padding: 22px;
+}
+
+.mithaq-card-title h3 {
+    margin: 0 0 18px;
+    color: var(--mithaq-brown-dark);
+    font-size: 18px;
+}
+
+.mithaq-subscription-info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.mithaq-subscription-info span {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--mithaq-muted);
+    font-size: 13px;
+}
+
+.mithaq-subscription-info strong {
+    color: var(--mithaq-brown-dark);
+}
+
+.mithaq-progress-head {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    color: var(--mithaq-muted);
+    font-size: 13px;
+}
+
+.mithaq-progress-line {
+    width: 100%;
+    height: 8px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #eadccc;
+}
+
+.mithaq-progress-fill {
+    width: 0;
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--mithaq-brown), var(--mithaq-brown-light));
+    transition: width 0.6s ease;
+}
+
+.mithaq-action-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.mithaq-action-list div {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    border-radius: 8px;
+    background: var(--mithaq-cream);
+    color: var(--mithaq-brown-dark);}
+
+.mithaq-quick-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 11px;
+}
+
+.mithaq-quick-actions a {
+    padding: 14px;
+    border: 1px solid var(--mithaq-border);
+    border-radius: 8px;
+    background: var(--mithaq-cream);
+    color: var(--mithaq-brown);
+    text-align: center;
+    text-decoration: none;
+    font-weight: 800;
+}
+
+.mithaq-mini-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.mithaq-mini-stats div {
+    padding: 16px;
+    border-radius: 10px;
+    background: var(--mithaq-cream);
+    text-align: center;
+}
+
+.mithaq-mini-stats span {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--mithaq-muted);
+    font-size: 13px;
+}
+
+.mithaq-mini-stats strong {
+    color: var(--mithaq-brown-dark);
+    font-size: 22px;
+}
+
+.mithaq-progress-overview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.mithaq-circle-progress {
+    width: 125px;
+    height: 125px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: conic-gradient(var(--mithaq-brown) 0deg, #eadccc 0deg);
+}
+
+.mithaq-circle-progress span {
+    width: 88px;
+    height: 88px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--mithaq-brown-dark);
+    font-size: 24px;
+    font-weight: 900;
+}
+
+.mithaq-progress-legend {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.mithaq-progress-legend div {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    color: var(--mithaq-muted);
+}
+
+.mithaq-dot {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    margin-inline-end: 8px;
+    border-radius: 50%;
+}
+
+.mithaq-dot-success {
+    background: var(--mithaq-success);
+}
+
+.mithaq-dot-warning {
+    background: var(--mithaq-warning);
+}
+
+.mithaq-dot-muted {
+    background: #b9aaa0;
+}
+
+.mithaq-contracts-section {
+    padding: 22px;
+}
+
+.mithaq-section-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.mithaq-section-top h3 {
+    margin: 0;
+    color: var(--mithaq-brown-dark);
+}
+
+.mithaq-filters-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.mithaq-filters-form input,
+.mithaq-filters-form select {
+    padding: 10px 12px;
+    border: 1px solid var(--mithaq-border);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--mithaq-text);
+}
+
+.mithaq-filters-form button,
+.mithaq-reset-btn {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    background: var(--mithaq-brown);
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: 800;
+}
+
+.mithaq-reset-btn {
+    background: #eee0d3;
+    color: var(--mithaq-brown);
+}
+
+.mithaq-table-wrapper {
+    overflow-x: auto;
+}
+
+.mithaq-contracts-table {
+    width: 100%;
+    min-width: 850px;
+    border-collapse: collapse;
+}
+
+.mithaq-contracts-table th,
+.mithaq-contracts-table td {
+    padding: 15px 12px;
+    border-bottom: 1px solid var(--mithaq-border);
+    text-align: left;
+    vertical-align: middle;
+}
+
+.mithaq-contracts-table th {
+    color: var(--mithaq-muted);
+    font-size: 13px;
+}
+
+.mithaq-contracts-table td strong {
+    display: block;
+    color: var(--mithaq-brown-dark);
+}
+
+.mithaq-contracts-table td small {
+    color: var(--mithaq-muted);
+}
+
+.mithaq-status-badge,
+.mithaq-type-badge {
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: var(--mithaq-cream);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.mithaq-status-completed {
+    color: var(--mithaq-success);
+    background: #e8f7ef;
+}
+
+.mithaq-status-active,
+.mithaq-status-in_progress {
+    color: var(--mithaq-warning);
+    background: #fff3df;
+}
+
+.mithaq-status-pending_signature {
+    color: var(--mithaq-brown);
+    background: #f5e6d8;
+}
+
+.mithaq-status-rejected {
+    color: var(--mithaq-danger);
+    background: #fde8e8;
+}
+
+.mithaq-status-draft {
+    color: #777;
+    background: #eeeeee;
+}
+
+.mithaq-table-progress {
+    display: flex;
+    align-items: center;gap: 10px;
+}
+
+.mithaq-table-progress .mithaq-progress-line {
+    width: 100px;
+}
+
+.mithaq-table-btn {
+    padding: 8px 12px;
+    border: 1px solid var(--mithaq-border);
+    border-radius: 8px;
+    background: var(--mithaq-cream);
+    color: var(--mithaq-brown);
+    text-decoration: none;
+    font-weight: 800;
+}
+
+.mithaq-empty-table,
+.mithaq-empty-text {
+    padding: 24px;
+    color: var(--mithaq-muted);
+    text-align: center;
+}
+
+@media (max-width: 991px) {
+    .mithaq-dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .mithaq-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .mithaq-dashboard-grid,
+    .mithaq-secondary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mithaq-section-top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 767px) {
+    .mithaq-dashboard {
+        padding: 18px;
+    }
+
+    .mithaq-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mithaq-dashboard-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .mithaq-btn-primary,
+    .mithaq-btn-secondary {
+        text-align: center;
+    }
+
+    .mithaq-subscription-info,
+    .mithaq-mini-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .mithaq-filters-form {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .mithaq-filters-form input,
+    .mithaq-filters-form select,
+    .mithaq-filters-form button,
+    .mithaq-reset-btn {
+        width: 100%;
+    }
+
+    .mithaq-progress-overview {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .mithaq-dashboard-header h1 {
+        font-size: 24px;
+    }
+
+    .mithaq-stat-card h2 {
+        font-size: 28px;
+    }
+
+    .mithaq-quick-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .mithaq-dashboard-card,
+    .mithaq-stat-card,
+    .mithaq-contracts-section {
+        border-radius: 10px;
+    }
+}
