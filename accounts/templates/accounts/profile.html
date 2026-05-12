@@ -15,7 +15,6 @@
 
     <form method="POST" enctype="multipart/form-data" action="{% url 'accounts:profile' %}" id="profile-form">
         {% csrf_token %}
-
         <!-- Avatar -->
         <div class="profile-avatar-section">
             <div class="profile-avatar-wrapper">
@@ -29,12 +28,12 @@
                 <label for="avatar-input" class="avatar-edit-btn" id="avatar-label">
                     <i class="bi bi-camera"></i>
                 </label>
-                <input type="file" name="avatar" id="avatar-input" accept="image/*" class="d-none">
+                <!-- مخفي تماماً -->
+                <input type="file" name="avatar" id="avatar-input" accept="image/*" style="display:none;">
             </div>
             <h2 class="profile-username">{{ user.full_name }}</h2>
             <p class="profile-email-text">{{ user.email }}</p>
         </div>
-
         <!-- Personal Info -->
         <div class="profile-section">
             <h3 class="profile-section-title">
@@ -90,7 +89,7 @@
 
         </div>
 
-       
+
         <!-- Actions -->
         <div class="profile-actions">
             <button type="button" class="profile-edit-btn" id="edit-btn" onclick="enableEdit()">
@@ -107,13 +106,13 @@
 </div>
 
 <script>
-function enableEdit() {
-    document.querySelectorAll('.profile-input[disabled]').forEach(input => {
-        input.removeAttribute('disabled');
-        input.classList.add('active');
-    });
-    document.getElementById('avatar-label').style.display = 'flex';
-}
+    function enableEdit() {
+        document.querySelectorAll('.profile-input[disabled]').forEach(input => {
+            input.removeAttribute('disabled');
+            input.classList.add('active');
+        });
+        document.getElementById('avatar-label').style.display = 'flex';
+    }
 </script>
 
 {% endblock %}
