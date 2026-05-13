@@ -1,0 +1,406 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800&display=swap');
+
+/* ========== Variables ========== */
+:root {
+    /* Main Palette */
+    --mithaq-navy: #1a2e4a;
+    --mithaq-navy-dark: #102039;
+    --mithaq-navy-deep: #0b1729;
+    --mithaq-navy-soft: rgba(26, 46, 74, 0.10);
+    --mithaq-navy-glass: rgba(26, 46, 74, 0.86);
+
+    --mithaq-gold: #C9A84C;
+    --mithaq-gold-dark: #a9892f;
+    --mithaq-gold-soft: rgba(201, 168, 76, 0.16);
+
+    --mithaq-white: #ffffff;
+    --mithaq-light-gray: #f5f5f5;
+
+    /* Page */
+    --mithaq-bg: #ffffff;
+    --mithaq-card-bg: #ffffff;
+    --mithaq-soft-bg: #f5f5f5;
+
+    /* Text */
+    --mithaq-text-primary: #1a1a1a;
+    --mithaq-text-secondary: #6b7280;
+    --mithaq-text-on-dark: #ffffff;
+    --mithaq-text-on-dark-muted: rgba(255, 255, 255, 0.72);
+
+    /* Borders */
+    --mithaq-border: #e5e7eb;
+    --mithaq-border-dark: rgba(255, 255, 255, 0.12);
+    --mithaq-border-gold: rgba(201, 168, 76, 0.40);
+
+    /* Sidebar */
+    --mithaq-sidebar-bg: linear-gradient(
+        180deg,
+        rgba(26, 46, 74, 0.96),
+        rgba(16, 32, 57, 0.98)
+    );
+
+    --mithaq-sidebar-link-hover: rgba(201, 168, 76, 0.13);
+
+    --mithaq-sidebar-link-active: linear-gradient(
+        135deg,
+        rgba(201, 168, 76, 0.30),
+        rgba(255, 255, 255, 0.08)
+    );
+
+    /* Navbar */
+    --mithaq-navbar-bg: #ffffff;
+
+    /* Buttons */
+    --mithaq-btn-primary-bg: linear-gradient(135deg, #1a2e4a, #C9A84C);
+    --mithaq-btn-primary-hover: linear-gradient(135deg, #102039, #a9892f);
+
+    /* Status */
+    --mithaq-success: #2e8b57;
+    --mithaq-warning: #C9A84C;
+    --mithaq-danger: #c94c4c;
+    --mithaq-info: #1a2e4a;
+
+    /* Shadows */
+    --mithaq-shadow-sm: 0 8px 20px rgba(26, 46, 74, 0.08);
+    --mithaq-shadow-md: 0 14px 35px rgba(26, 46, 74, 0.12);
+    --mithaq-shadow-lg: 0 22px 60px rgba(26, 46, 74, 0.18);
+
+    /* Radius */
+    --mithaq-radius-sm: 8px;
+    --mithaq-radius-md: 12px;
+    --mithaq-radius-lg: 18px;
+    --mithaq-radius-pill: 999px;
+
+    /* Layout */
+    --mithaq-sidebar-width: 245px;
+    --mithaq-navbar-height: 68px;
+
+    /* Typography */
+    --mithaq-font: "Tajawal", Arial, sans-serif;
+    --mithaq-text-md: 14px;
+    --mithaq-text-sm: 13px;
+    --mithaq-text-xs: 11px;
+
+    --mithaq-transition: 0.25s ease;
+}
+
+/* ========== Reset ========== */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: var(--mithaq-font);
+    background: var(--mithaq-bg);
+    color: var(--mithaq-text-primary);
+    font-size: var(--mithaq-text-md);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button,
+input {
+    font-family: inherit;
+}
+
+/* ========== Layout ========== */
+.mithaq-layout {
+    display: flex;
+    min-height: 100vh;
+    background: var(--mithaq-white);
+}
+
+/* ========== Sidebar ========== */
+.mithaq-sidebar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: var(--mithaq-sidebar-width);
+    height: 100vh;
+    background: var(--mithaq-sidebar-bg);
+    backdrop-filter: blur(18px);
+    color: var(--mithaq-text-on-dark);
+    border-left: 1px solid var(--mithaq-border-dark);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    box-shadow: var(--mithaq-shadow-lg);
+}
+
+.mithaq-brand {
+    padding: 24px 22px 18px;
+    border-bottom: 1px solid var(--mithaq-border-dark);
+}
+
+.mithaq-brand h1 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--mithaq-white);
+}
+
+.mithaq-brand p {
+    margin: 4px 0 0;
+    font-size: 12px;
+    color: var(--mithaq-text-on-dark-muted);
+}
+
+/* ========== Sidebar Menu ========== */
+.mithaq-menu {
+    flex: 1;
+    padding: 18px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.mithaq-menu-link {
+    height: 42px;
+    padding: 0 13px;
+    border-radius: var(--mithaq-radius-md);
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    color: var(--mithaq-text-on-dark-muted);
+    font-size: 13.5px;
+    font-weight: 500;
+    transition: var(--mithaq-transition);
+    border: 1px solid transparent;
+}
+
+.mithaq-menu-link i {
+    font-size: 16px;width: 20px;
+    text-align: center;
+    color: var(--mithaq-gold);
+}
+
+.mithaq-menu-link:hover {
+    color: var(--mithaq-white);
+    background: var(--mithaq-sidebar-link-hover);
+}
+
+.mithaq-menu-link.active {
+    color: var(--mithaq-white);
+    background: var(--mithaq-sidebar-link-active);
+    border: 1px solid var(--mithaq-border-gold);
+    box-shadow: 0 10px 24px rgba(201, 168, 76, 0.10);
+}
+
+/* ========== Logout ========== */
+.mithaq-sidebar-footer {
+    padding: 14px 12px 18px;
+    border-top: 1px solid var(--mithaq-border-dark);
+}
+
+.mithaq-logout {
+    height: 42px;
+    padding: 0 13px;
+    border-radius: var(--mithaq-radius-md);
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    color: var(--mithaq-text-on-dark-muted);
+    font-size: 13.5px;
+    transition: var(--mithaq-transition);
+}
+
+.mithaq-logout i {
+    color: var(--mithaq-gold);
+}
+
+.mithaq-logout:hover {
+    background: rgba(201, 168, 76, 0.13);
+    color: var(--mithaq-white);
+}
+
+/* ========== Page ========== */
+.mithaq-page {
+    width: 100%;
+    min-height: 100vh;
+    margin-right: var(--mithaq-sidebar-width);
+    background: var(--mithaq-white);
+}
+
+/* ========== Navbar ========== */
+.mithaq-navbar {
+    height: var(--mithaq-navbar-height);
+    padding: 0 28px;
+    border-bottom: 1px solid var(--mithaq-border);
+    background: var(--mithaq-navbar-bg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    position: sticky;
+    top: 0;
+    z-index: 900;
+}
+
+.mithaq-menu-toggle {
+    display: none;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--mithaq-radius-md);
+    border: 1px solid var(--mithaq-border);
+    background: var(--mithaq-white);
+    color: var(--mithaq-text-primary);
+    cursor: pointer;
+}
+
+.mithaq-navbar-search {
+    width: min(540px, 55vw);
+    height: 42px;
+    padding: 0 15px;
+    border: 1px solid var(--mithaq-border);
+    border-radius: var(--mithaq-radius-md);
+    background: var(--mithaq-white);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: var(--mithaq-shadow-sm);
+}
+
+.mithaq-navbar-search i {
+    color: var(--mithaq-text-secondary);
+}
+
+.mithaq-navbar-search input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--mithaq-text-primary);
+    font-size: 13px;
+}
+
+.mithaq-navbar-search input::placeholder {
+    color: var(--mithaq-text-secondary);
+}
+
+/* ========== Navbar Actions ========== */
+.mithaq-navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mithaq-icon-btn,
+.mithaq-profile-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--mithaq-radius-md);
+    border: 1px solid var(--mithaq-border);
+    background: var(--mithaq-white);
+    color: var(--mithaq-text-primary);
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    position: relative;
+    box-shadow: var(--mithaq-shadow-sm);
+}
+
+.mithaq-icon-btn i {
+    color: var(--mithaq-navy);
+}
+
+.mithaq-icon-btn span {
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    width: 7px;
+    height: 7px;
+    background: var(--mithaq-gold);
+    border-radius: 50%;
+}
+
+.mithaq-profile-btn {
+    background: var(--mithaq-btn-primary-bg);
+    color: var(--mithaq-white);
+    font-weight: 700;
+    border: 0;
+}
+
+/* ========== Content ========== */
+.mithaq-content {
+    padding: 28px;
+}
+
+/* ========== Overlay ========== */
+.mithaq-overlay {
+    display: none;
+}
+
+/* ========== Responsive 991 ========== */
+@media (max-width: 991px) {
+    .mithaq-sidebar {
+        transform: translateX(100%);
+        transition: var(--mithaq-transition);
+    }
+
+    .mithaq-sidebar.open {
+        transform: translateX(0);
+    }
+
+    .mithaq-page {
+        margin-right: 0;
+    }
+
+    .mithaq-menu-toggle {
+        display: grid;
+        place-items: center;
+    }
+
+    .mithaq-navbar-search {
+        width: 100%;
+    }
+
+    .mithaq-overlay.open {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(26, 46, 74, 0.38);
+        z-index: 999;
+    }
+}
+
+/* ========== Responsive 767 ========== */@media (max-width: 767px) {
+    :root {
+        --mithaq-sidebar-width: 230px;
+        --mithaq-navbar-height: 62px;
+    }
+
+    .mithaq-navbar {
+        padding: 0 16px;
+    }
+
+    .mithaq-content {
+        padding: 18px;
+    }
+
+    .mithaq-navbar-search {
+        height: 38px;
+    }
+}
+
+/* ========== Responsive 480 ========== */
+@media (max-width: 480px) {
+    .mithaq-sidebar {
+        width: 82%;
+    }
+
+    .mithaq-navbar {
+        gap: 8px;
+    }
+
+    .mithaq-navbar-search input {
+        font-size: 12px;
+    }
+
+    .mithaq-content {
+        padding: 14px;
+    }
+}
