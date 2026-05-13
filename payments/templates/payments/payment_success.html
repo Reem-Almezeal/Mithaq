@@ -6,13 +6,13 @@
 <section class="min-h-screen bg-brand-bg flex items-center justify-center px-4 py-16">
   <div class="max-w-md w-full bg-white rounded-2xl shadow-sm border border-gray-100 p-10 text-center">
 
-    <div class="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-6">
-      <svg class="w-8 h-8 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+    <div class="w-20 h-20 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-6">
+      <svg class="w-10 h-10 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
       </svg>
     </div>
 
-    <h1 class="text-2xl font-bold text-black mb-3">تم الدفع بنجاح!</h1>
+    <h1 class="text-2xl font-bold text-black mb-2">تم الدفع بنجاح!</h1>
     <p class="text-gray-500 mb-8">اشتراكك الآن نشط ويمكنك البدء بإنشاء عقودك.</p>
 
     {% if subscription %}
@@ -28,6 +28,14 @@
         </span>
         <span class="text-xs text-gray-400">الحالة</span>
       </div>
+      <div class="flex justify-between items-center">
+        <span class="text-sm text-gray-700 font-semibold">
+          {{ subscription.contracts_used }} من
+          {% if subscription.plan.contract_limit == -1 %}غير محدود{% else %}{{ subscription.plan.contract_limit }}{% endif %}
+          عقد
+        </span>
+        <span class="text-xs text-gray-400">العقود المستخدمة</span>
+      </div>
       {% if subscription.expires_at %}
       <div class="flex justify-between items-center">
         <span class="text-sm text-gray-700 font-semibold">{{ subscription.expires_at|date:"Y/m/d" }}</span>
@@ -42,15 +50,21 @@
     </div>
     {% endif %}
 
-    <a href="/dashboard/"
-       class="inline-flex items-center gap-2 w-full justify-center
-              px-6 py-3 rounded-xl text-sm font-bold text-white
-              bg-black hover:bg-gray-800 active:scale-95 transition-all duration-150">
-      العودة للوحة التحكم
-      <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-      </svg>
-    </a>
+    <div class="space-y-3">
+      <a href="/contracts/create/"
+         class="inline-flex items-center gap-2 w-full justify-center
+                px-6 py-3 rounded-xl text-sm font-bold text-white
+                bg-brand-gold hover:bg-brand-gold-dark active:scale-95 transition-all duration-150">
+        إنشاء عقد الآن
+      </a>
+      <a href="/dashboard/"
+         class="inline-flex items-center gap-2 w-full justify-center
+                px-6 py-3 rounded-xl text-sm font-bold text-black
+                border-2 border-black hover:bg-black hover:text-white
+                active:scale-95 transition-all duration-150">
+        لوحة التحكم
+      </a>
+    </div>
 
   </div>
 </section>
