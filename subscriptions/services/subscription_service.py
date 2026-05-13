@@ -1,9 +1,12 @@
+import logging
 from datetime import timedelta
 
 from django.db import transaction
 from django.utils import timezone
 
 from subscriptions.models import SubscriptionPlan, UserSubscription
+
+logger = logging.getLogger(__name__)
 
 
 def assign_free_plan(user) -> UserSubscription:
@@ -72,6 +75,61 @@ def increment_contracts_used(user) -> UserSubscription:
         sub.contracts_used += 1
         sub.save(update_fields=['contracts_used', 'updated_at'])
         return sub
+
+
+def activate_subscription(user, plan: SubscriptionPlan) -> UserSubscription:
+    """
+    Activate or upgrade a user's subscription after a successful payment.
+
+    If the user already has a UserSubscription it is updated in place; otherwise
+    a new one is created. contracts_used is reset to 0 on every activation.
+    expires_at is computed from plan.duration_days (None when duration_days == 0,
+    meaning the plan never expires — e.g. the Free plan).
+
+    Uses SELECT FOR UPDATE to prevent concurrent activations for the same user.
+    Returns the saved UserSubscription.
+    """
+    with transaction.atomic():
+        try:
+            sub = UserSubscription.objects.select_for_update().get(user=user)
+            sub.plan = plan
+            sub.status = UserSubscription.Status.ACTIVE
+            sub.contracts_used = 0
+            sub.started_at = timezone.now()
+            sub.expires_at = (
+                timezone.now() + timedelta(days=plan.duration_days)
+                if plan.duration_days > 0
+                else None
+            )
+            sub.save()
+        except UserSubscription.DoesNotExist:
+            sub = UserSubscription.objects.create(
+                user=user,
+                plan=plan,
+                status=UserSubscription.Status.ACTIVE,
+                contracts_used=0,
+                started_at=timezone.now(),
+                expires_at=(
+                    timezone.now() + timedelta(days=plan.duration_days)
+                    if plan.duration_days > 0
+                    else None
+                ),
+            )
+    try:
+        from audit.models import AuditEvent
+        AuditEvent.objects.create(
+            actor=user,
+            event_type=AuditEvent.EventType.SUBSCRIPTION_ACTIVATED,
+            payload={
+                'plan': plan.name,
+                'plan_ar': plan.name_ar,
+                'plan_type': plan.plan_type,
+            },
+        )
+    except Exception as exc:
+        logger.warning('AuditEvent write failed for subscription activation: %s', exc)
+
+    return sub
 
 
 def upgrade_subscription(user, new_plan: SubscriptionPlan) -> UserSubscription:

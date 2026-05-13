@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}ميثاق — الملف الشخصي{% endblock %}
+
+{% block content %}
+<div class="profile-page">
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert {{ message.extra_tags }}">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data" action="{% url 'accounts:profile' %}" id="profile-form">
+        {% csrf_token %}
+        <!-- Avatar -->
+        <div class="profile-avatar-section">
+            <div class="profile-avatar-wrapper">
+                {% if user.avatar %}
+                <img src="{{ user.avatar.url }}" class="profile-avatar-img" id="avatar-preview">
+                {% else %}
+                <div class="profile-avatar-initials" id="avatar-preview">
+                    {{ user.first_name|first }}{{ user.last_name|first }}
+                </div>
+                {% endif %}
+                <label for="avatar-input" class="avatar-edit-btn" id="avatar-label">
+                    <i class="bi bi-camera"></i>
+                </label>
+                <!-- مخفي تماماً -->
+                <input type="file" name="avatar" id="avatar-input" accept="image/*" style="display:none;">
+            </div>
+            <h2 class="profile-username">{{ user.full_name }}</h2>
+            <p class="profile-email-text">{{ user.email }}</p>
+        </div>
+        <!-- Personal Info -->
+        <div class="profile-section">
+            <h3 class="profile-section-title">
+                <i class="bi bi-person"></i>
+                المعلومات الشخصية
+            </h3>
+
+            <div class="profile-row">
+                <div class="profile-field">
+                    <label>الاسم الأول</label>
+                    <input type="text" name="first_name" value="{{ user.first_name }}" class="profile-input" disabled>
+                </div>
+                <div class="profile-field">
+                    <label>اسم العائلة</label>
+                    <input type="text" name="last_name" value="{{ user.last_name }}" class="profile-input" disabled>
+                </div>
+            </div>
+
+            <div class="profile-field">
+                <label>نبذة شخصية (اختياري)</label>
+                <textarea name="bio" rows="3" class="profile-input" disabled>{{ user.bio|default:'' }}</textarea>
+            </div>
+
+            <div class="profile-field">
+                <label>تاريخ الميلاد</label>
+                <input type="date" name="date_of_birth" value="{{ user.date_of_birth|date:'Y-m-d'|default:'' }}"
+                    class="profile-input" disabled>
+            </div>
+
+            <div class="profile-field">
+                <label>رقم الهوية / الإقامة</label>
+                <input type="text" value="{{ user.national_id }}" class="profile-input" readonly>
+            </div>
+
+        </div>
+
+        <!-- Contact Info -->
+        <div class="profile-section">
+            <h3 class="profile-section-title">
+                <i class="bi bi-telephone"></i>
+                بيانات التواصل
+            </h3>
+
+            <div class="profile-field">
+                <label>البريد الإلكتروني</label>
+                <input type="text" value="{{ user.email }}" class="profile-input" readonly>
+            </div>
+
+            <div class="profile-field">
+                <label>رقم الجوال</label>
+                <input type="text" name="mobile" value="{{ user.mobile }}" class="profile-input" disabled>
+            </div>
+
+        </div>
+
+
+        <!-- Actions -->
+        <div class="profile-actions">
+            <button type="button" class="profile-edit-btn" id="edit-btn" onclick="enableEdit()">
+                <i class="bi bi-pencil"></i>
+                تعديل
+            </button>
+            <button type="submit" class="profile-save-btn" id="save-btn">
+                <i class="bi bi-check-lg"></i>
+                حفظ التغييرات
+            </button>
+        </div>
+
+    </form>
+</div>
+
+<script>
+    function enableEdit() {
+        document.querySelectorAll('.profile-input[disabled]').forEach(input => {
+            input.removeAttribute('disabled');
+            input.classList.add('active');
+        });
+        document.getElementById('avatar-label').style.display = 'flex';
+    }
+</script>
+
+{% endblock %}

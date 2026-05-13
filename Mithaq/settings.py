@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -162,3 +163,9 @@ SIMPLE_JWT = {
 
 # Added by Remas — custom user model to replace Django's default auth.User
 AUTH_USER_MODEL = 'accounts.User'
+
+# Moyasar payment gateway (Saudi-licensed)
+MOYASAR_API_KEY       = config('MOYASAR_API_KEY')
+MOYASAR_PUBLISHABLE_KEY = config('MOYASAR_PUBLISHABLE_KEY')
+MOYASAR_BASE_URL      = 'https://api.moyasar.com/v1'
+MOYASAR_CALLBACK_URL  = config('MOYASAR_CALLBACK_URL', default='http://localhost:8000/api/payments/callback/')

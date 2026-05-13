@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import PaymentRecord, SubscriptionPlan, UserSubscription
+from .models import SubscriptionPlan, UserSubscription
 
 
 class SubscriptionPlanSerializer(serializers.ModelSerializer):
@@ -25,13 +25,3 @@ class UserSubscriptionSerializer(serializers.ModelSerializer):
 
     def get_can_create_contract(self, obj: UserSubscription) -> bool:
         return obj.can_create_contract()
-
-
-class PaymentRecordSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PaymentRecord
-        fields = (
-            'id', 'plan', 'moyasar_payment_id', 'amount',
-            'currency', 'status', 'payment_method', 'created_at',
-        )
-        read_only_fields = fields
