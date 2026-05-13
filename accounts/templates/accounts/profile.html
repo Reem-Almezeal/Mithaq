@@ -1,8 +1,12 @@
-{% extends "base.html" %}
+{% extends "core/dashboard_base.html" %}
 
 {% load static %}
 
 {% block title %}ميثاق — الملف الشخصي{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/accountscss.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="profile-page">
