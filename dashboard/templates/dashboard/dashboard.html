@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "core/dashboard_base.html" %}
 {% load static %}
 
 {% block extra_css %}
@@ -10,34 +10,27 @@
 <section class="mithaq-dashboard" dir="rtl">
 
     <div class="mithaq-dashboard-header">
-
         <div>
-            <span class="mithaq-page-label">التحم</span>
-
+            <span class="mithaq-page-label">التحكم</span>
             <h1>
                 أهلاً بعودتك،
                 {{ request.user.first_name|default:request.user.username }}
             </h1>
-
             <p>
                 إليك نظرة سريعة على العقود والإجراءات الحالية.
             </p>
         </div>
-
         <div class="mithaq-dashboard-actions">
             <a href="#" class="mithaq-btn-primary">
                 + إنشاء عقد جديد
             </a>
-
             <a href="#" class="mithaq-btn-secondary">
                 دعوة طرف للتوقيع
             </a>
         </div>
-
     </div>
 
     <div class="mithaq-stats-grid">
-
         <div class="mithaq-stat-card">
             <span>إجمالي العقود</span>
             <h2>{{ total_contracts }}</h2>
@@ -63,11 +56,8 @@
         </div>
 
     </div>
-
     <div class="mithaq-dashboard-grid">
-
         <div class="mithaq-dashboard-card mithaq-subscription-card">
-
             <div class="mithaq-card-title">
                 <h3>الاشتراك الحالي</h3>
             </div>
@@ -99,7 +89,6 @@
 
                 <div class="mithaq-progress-head">
                     <span>استخدام الاشتراك</span>
-
                     <strong data-progress="{{ current_subscription.usage_percentage|default:'0' }}">
                         {{ current_subscription.usage_percentage|default:0 }}%
                     </strong>
@@ -110,27 +99,22 @@
                          data-progress="{{ current_subscription.usage_percentage|default:'0' }}">
                     </div>
                 </div>
-
             </div>
 
             {% else %}
-
             <p class="mithaq-empty-text">
                 لا يوجد اشتراك نشط حالياً.
             </p>
 
             {% endif %}
-
         </div>
 
         <div class="mithaq-dashboard-card">
-
             <div class="mithaq-card-title">
                 <h3>الإجراءات المطلوبة</h3>
             </div>
 
             <div class="mithaq-action-list">
-
                 <div>
                     <span>بانتظار التوقيع</span>
                     <strong>{{ pending_signatures }}</strong>
@@ -144,7 +128,6 @@
                 <div>
                     <span>الدعوات المستلمة</span>
                     <strong>{{ received_invitations|default:0 }}</strong></div>
-
                 <div>
                     <span>العقود المرفوضة</span>
                     <strong>{{ rejected_contracts }}</strong>
@@ -155,13 +138,11 @@
         </div>
 
         <div class="mithaq-dashboard-card">
-
             <div class="mithaq-card-title">
                 <h3>إجراءات سريعة</h3>
             </div>
 
             <div class="mithaq-quick-actions">
-
                 <a href="#">
                     إنشاء عقد
                 </a>
@@ -179,21 +160,17 @@
                 </a>
 
             </div>
-
         </div>
-
     </div>
 
     <div class="mithaq-secondary-grid">
 
         <div class="mithaq-dashboard-card">
-
             <div class="mithaq-card-title">
                 <h3>إحصائيات سريعة</h3>
             </div>
 
             <div class="mithaq-mini-stats">
-
                 <div>
                     <span>المسودات</span>
                     <strong>{{ draft_contracts }}</strong>
@@ -215,28 +192,22 @@
                 </div>
 
             </div>
-
         </div>
 
         <div class="mithaq-dashboard-card">
-
             <div class="mithaq-card-title">
                 <h3>نسبة تقدم العقود</h3>
             </div>
 
             <div class="mithaq-progress-overview">
-
                 <div class="mithaq-circle-progress"
                      data-progress="{{ avg_completion|default:'0' }}">
-
                     <span>
                         {{ avg_completion|default:0 }}%
                     </span>
-
                 </div>
 
                 <div class="mithaq-progress-legend">
-
                     <div>
                         <span class="mithaq-dot mithaq-dot-success"></span>
                         مكتملة
@@ -254,23 +225,16 @@
                         مسودات
                         <strong>{{ draft_contracts }}</strong>
                     </div>
-
                 </div>
 
             </div>
-
         </div>
-
     </div>
 
     <div class="mithaq-contracts-section">
-
         <div class="mithaq-section-top">
-
             <h3>جميع العقود</h3>
-
             <form method="get" class="mithaq-filters-form">
-
                 <input
                     type="text"
                     id="mithaqContractSearch"
@@ -278,7 +242,6 @@
                 >
 
                 <select name="status">
-
                     <option value="">كل الحالات</option>
 
                     <option value="draft"
