@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}خطط الاشتراك — ميثاق{% endblock %}
+
+{% block content %}
+<section class="bg-brand-bg min-h-screen py-16 px-4">
+  <div class="max-w-5xl mx-auto">
+
+    <!-- Page header -->
+    <div class="text-center mb-12">
+      <h1 class="text-3xl sm:text-4xl font-bold text-black mb-3">اختر خطتك</h1>
+      <p class="text-gray-500">ابدأ مجاناً وقم بالترقية في أي وقت</p>
+    </div>
+
+    <!-- Upgrade banner — shown when user has hit their contract limit -->
+    {% if current_sub and not current_sub.can_create_contract %}
+    <div class="mb-8 flex items-center gap-3 bg-amber-50 border border-amber-200 rounded-xl px-5 py-4">
+      <svg class="w-5 h-5 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+      </svg>
+      <p class="text-sm font-semibold text-amber-800">
+        لقد استنفدت عدد عقودك. قم بترقية خطتك للاستمرار.
+      </p>
+    </div>
+    {% endif %}
+
+    <!-- Plan cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {% for plan in plans %}
+
+      {% with is_current=current_sub and current_sub.plan.id == plan.id %}
+      <div class="relative flex flex-col bg-white rounded-2xl border-2
+                  {% if plan.plan_type == 'MONTHLY' %}border-black{% elif is_current %}border-brand-gold{% else %}border-gray-100{% endif %}
+                  p-7 shadow-sm hover:shadow-md transition-shadow duration-200">
+
+        <!-- Badges -->
+        <div class="flex gap-2 mb-4 min-h-[28px]">
+          {% if plan.plan_type == 'MONTHLY' %}
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-black text-white">
+            الأكثر شعبية
+          </span>
+          {% endif %}
+          {% if is_current %}
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-brand-gold text-white">
+            خطتك الحالية
+          </span>
+          {% endif %}
+        </div>
+
+        <!-- Plan name -->
+        <h2 class="text-xl font-bold text-black mb-1">{{ plan.name_ar }}</h2>
+        <p class="text-sm text-gray-400 mb-5">{{ plan.name }}</p>
+
+        <!-- Price -->
+        <div class="mb-6">
+          {% if plan.price == 0 %}
+          <span class="text-4xl font-bold text-black">مجاناً</span>
+          {% else %}
+          <span class="text-4xl font-bold text-black">{{ plan.price }}</span>
+          <span class="text-lg text-gray-500 mr-1">ريال</span>
+          {% endif %}
+        </div>
+
+        <!-- Features -->
+        <ul class="space-y-3 mb-8 flex-1">
+          <li class="flex items-center gap-2 text-sm text-gray-700">
+            <svg class="w-4 h-4 text-brand-green shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            {% if plan.contract_limit == -1 %}
+              عقود غير محدودة
+            {% else %}
+              {{ plan.contract_limit }} عقد
+            {% endif %}
+          </li>
+          <li class="flex items-center gap-2 text-sm text-gray-700">
+            <svg class="w-4 h-4 text-brand-green shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            {% if plan.duration_days == 0 %}دائم{% else %}{{ plan.duration_days }} يوماً{% endif %}
+          </li>
+          <li class="flex items-center gap-2 text-sm text-gray-700">
+            <svg class="w-4 h-4 text-brand-green shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            توقيع رقمي
+          </li>
+        </ul>
+
+        <!-- CTA button -->
+        {% if plan.plan_type == 'FREE' %}
+          {% if current_sub %}
+          <button disabled
+                  class="w-full py-3 rounded-xl text-sm font-bold text-gray-400
+                         bg-gray-100 cursor-not-allowed">
+            ابدأ مجاناً
+          </button>
+          {% else %}
+          <a href="/accounts/signup/"
+             class="block w-full text-center py-3 rounded-xl text-sm font-bold text-white
+                    bg-black hover:bg-gray-800 active:scale-95 transition-all duration-150">
+            ابدأ مجاناً
+          </a>
+          {% endif %}
+        {% else %}
+          {% if is_current %}
+          <button disabled
+                  class="w-full py-3 rounded-xl text-sm font-bold text-gray-400
+                         bg-gray-100 cursor-not-allowed">
+            خطتك الحالية
+          </button>
+          {% else %}
+          <a href="/api/subscriptions/checkout-page/{{ plan.id }}/"
+             class="block w-full text-center py-3 rounded-xl text-sm font-bold text-white
+                    bg-brand-gold hover:bg-brand-gold-dark active:scale-95 transition-all duration-150">
+            اشترك الآن
+          </a>
+          {% endif %}
+        {% endif %}
+
+      </div>
+      {% endwith %}
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+{% endblock %}

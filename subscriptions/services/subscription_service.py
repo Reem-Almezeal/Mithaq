@@ -132,6 +132,102 @@ def activate_subscription(user, plan: SubscriptionPlan) -> UserSubscription:
     return sub
 
 
+def check_contract_limit(user) -> UserSubscription:
+    """
+    Enforce contract creation limits before allowing a new contract.
+
+    Unlike increment_contracts_used (which raises ValueError), this function
+    raises PermissionDenied so views can return HTTP 403 directly to the user.
+
+    Checks subscription existence and status first (without a lock), then
+    acquires SELECT FOR UPDATE before incrementing contracts_used to prevent
+    a race condition under concurrent requests.
+
+    Returns the updated UserSubscription on success.
+    """
+    from django.core.exceptions import PermissionDenied
+
+    try:
+        sub = UserSubscription.objects.select_related('plan').get(user=user)
+    except UserSubscription.DoesNotExist:
+        raise PermissionDenied("لا يوجد اشتراك نشط. يرجى اختيار خطة.")
+
+    if sub.status == UserSubscription.Status.EXPIRED:
+        raise PermissionDenied("انتهت صلاحية اشتراكك. يرجى التجديد.")
+
+    with transaction.atomic():
+        sub = (
+            UserSubscription.objects
+            .select_for_update()
+            .select_related('plan')
+            .get(user=user)
+        )
+
+        if sub.status != UserSubscription.Status.ACTIVE:
+            raise PermissionDenied("لا يوجد اشتراك نشط. يرجى اختيار خطة.")
+
+        if not sub.can_create_contract():
+            raise PermissionDenied("لقد استنفدت عدد العقود المسموح به في خطتك الحالية.")
+
+        sub.contracts_used += 1
+        sub.save(update_fields=['contracts_used', 'updated_at'])
+
+    try:
+        from audit.models import AuditEvent
+        AuditEvent.objects.create(
+            actor=user,
+            event_type=AuditEvent.EventType.CONTRACT_LIMIT_CHECKED,
+            payload={
+                'contracts_used': sub.contracts_used,
+                'contract_limit': sub.plan.contract_limit,
+            },
+        )
+    except Exception as exc:
+        logger.warning('AuditEvent write failed for contract limit check: %s', exc)
+
+    return sub
+
+
+def check_and_expire_subscriptions() -> int:
+    """
+    Expire all active subscriptions whose expires_at timestamp has passed.
+
+    Queries for ACTIVE subscriptions with a non-null expires_at <= now(),
+    sets each to EXPIRED, and writes an AuditEvent per subscription.
+    Intended to be called from the expire_subscriptions management command
+    or a scheduled task (Celery beat, cron).
+
+    Returns the count of subscriptions that were expired.
+    """
+    now = timezone.now()
+    due = UserSubscription.objects.filter(
+        status=UserSubscription.Status.ACTIVE,
+        expires_at__isnull=False,
+        expires_at__lte=now,
+    ).select_related('user', 'plan')
+
+    count = 0
+    for sub in due:
+        sub.status = UserSubscription.Status.EXPIRED
+        sub.save(update_fields=['status', 'updated_at'])
+        count += 1
+
+        try:
+            from audit.models import AuditEvent
+            AuditEvent.objects.create(
+                actor=sub.user,
+                event_type=AuditEvent.EventType.SUBSCRIPTION_EXPIRED,
+                payload={
+                    'plan': sub.plan.name,
+                    'expired_at': now.isoformat(),
+                },
+            )
+        except Exception as exc:
+            logger.warning('AuditEvent write failed for subscription expiry: %s', exc)
+
+    return count
+
+
 def upgrade_subscription(user, new_plan: SubscriptionPlan) -> UserSubscription:
     """
     Switch the user's subscription to a new plan.
