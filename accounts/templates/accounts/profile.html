@@ -90,6 +90,76 @@
         </div>
 
 
+        <!-- Subscription -->
+        <div class="profile-section">
+            <h3 class="profile-section-title">
+                <i class="bi bi-credit-card"></i>
+                الاشتراك
+            </h3>
+
+            {% if subscription %}
+            <div class="profile-row">
+                <div class="profile-field">
+                    <label>الخطة الحالية</label>
+                    <p class="profile-input" style="display:flex;align-items:center;gap:8px;">
+                        {{ subscription.plan.name_ar }}
+                        <span style="font-size:12px;color:#888;">{{ subscription.plan.name }}</span>
+                    </p>
+                </div>
+                <div class="profile-field">
+                    <label>الحالة</label>
+                    <p class="profile-input">
+                        {% if subscription.status == 'ACTIVE' %}
+                        <span style="color:#2D7A4F;font-weight:700;">نشط</span>
+                        {% elif subscription.status == 'EXPIRED' %}
+                        <span style="color:#C0392B;font-weight:700;">منتهي</span>
+                        {% else %}
+                        <span style="color:#888;font-weight:700;">ملغى</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <div class="profile-row">
+                <div class="profile-field">
+                    <label>العقود المستخدمة</label>
+                    <p class="profile-input">
+                        {{ subscription.contracts_used }} من
+                        {% if subscription.plan.contract_limit == -1 %}
+                            غير محدود
+                        {% else %}
+                            {{ subscription.plan.contract_limit }}
+                        {% endif %}
+                        عقد
+                    </p>
+                </div>
+                <div class="profile-field">
+                    <label>تاريخ الانتهاء</label>
+                    <p class="profile-input">
+                        {% if subscription.expires_at %}
+                            {{ subscription.expires_at|date:"Y/m/d" }}
+                        {% else %}
+                            لا تنتهي
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <div class="profile-actions" style="justify-content:flex-start;margin-top:8px;">
+                <a href="/api/subscriptions/plans-page/" class="profile-edit-btn">
+                    <i class="bi bi-arrow-up-circle"></i>
+                    ترقية الخطة
+                </a>
+            </div>
+            {% else %}
+            <p style="color:#888;font-size:14px;">لا يوجد اشتراك نشط.</p>
+            <a href="/api/subscriptions/plans-page/" class="profile-edit-btn" style="display:inline-flex;margin-top:8px;">
+                <i class="bi bi-credit-card"></i>
+                اختر خطة
+            </a>
+            {% endif %}
+        </div>
+
         <!-- Actions -->
         <div class="profile-actions">
             <button type="button" class="profile-edit-btn" id="edit-btn" onclick="enableEdit()">
