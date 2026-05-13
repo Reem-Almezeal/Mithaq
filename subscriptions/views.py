@@ -1,3 +1,26 @@
+# =============================================================================
+# subscriptions/views.py
+# OWNED BY: Ghadi
+#
+# RULE: Views are thin. Each view makes ONE service call and returns the result.
+#       All logic lives in subscriptions/services/subscription_service.py.
+#
+# API ENDPOINTS (require JWT or session auth unless noted):
+#   GET  /api/subscriptions/plans/            → PlanListView         (public)
+#   GET  /api/subscriptions/status/           → SubscriptionStatusView
+#   GET  /api/subscriptions/upgrade-options/  → UpgradeOptionsView
+#
+# TEMPLATE PAGES (HTML — require session login):
+#   GET  /api/subscriptions/plans-page/              → plans_page()
+#   GET  /api/subscriptions/checkout-page/<id>/      → checkout_page()
+#
+# FUTURE WORK (Ghadi):
+#   - Add a subscription management page (cancel, view history)
+#   - Add a webhook handler if Moyasar sends server-side events
+#   - Consider moving template pages to a dedicated frontend once the
+#     team decides on a frontend framework
+# =============================================================================
+
 from django.shortcuts import render, get_object_or_404
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated

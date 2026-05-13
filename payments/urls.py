@@ -1,3 +1,22 @@
+# =============================================================================
+# payments/urls.py   →   mounted at: api/payments/ (Mithaq/urls.py)
+#
+# Full URL map:
+#   AUTHENTICATED:
+#       POST /api/payments/checkout/<plan_id>/  ← JS fetch() from checkout.html
+#
+#   PUBLIC (Moyasar redirects here after payment):
+#       GET  /api/payments/callback/            ← Moyasar calls this
+#       GET  /api/payments/success/             ← User sees this after success
+#       GET  /api/payments/failed/              ← User sees this after failure
+#
+#   CALLBACK URL in .env:
+#       MOYASAR_CALLBACK_URL=http://localhost:8000/api/payments/callback/
+#       Update this to the real domain before going to production.
+#
+# FUTURE WORK: add GET /api/payments/history/ for payment records list
+# =============================================================================
+
 from django.urls import path
 
 from . import views

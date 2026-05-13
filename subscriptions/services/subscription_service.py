@@ -1,3 +1,50 @@
+# =============================================================================
+# subscriptions/services/subscription_service.py
+# OWNED BY: Ghadi
+#
+# PURPOSE:
+#   All subscription business logic lives here.
+#   Views and other apps call these functions — they never touch models directly.
+#
+# HOW IT CONNECTS TO OTHER APPS:
+#
+#   accounts/views.py → assign_free_plan(user)
+#       Called right after User.objects.create_user() in sign_up().
+#       Every new user automatically gets the Free plan (1 contract limit).
+#
+#   payments/services/moyasar_service.py → activate_subscription(user, plan)
+#       Called inside handle_callback() after Moyasar confirms a payment.
+#       Upgrades the user's plan and resets contracts_used to 0.
+#
+#   contracts/services/contract_workflow.py → check_contract_limit(user)
+#       *** THIS INTEGRATION IS PENDING — see FUTURE WORK below ***
+#       Must be called as the first line of ContractWorkflowService.create_contract()
+#       before any DB write. If the user is over their limit → PermissionDenied (403).
+#
+# FUTURE WORK (Ghadi):
+#
+#   [1] Hook check_contract_limit into the contracts workflow.
+#       File:   contracts/services/contract_workflow.py
+#       Class:  ContractWorkflowService
+#       Method: create_contract(creator, data)
+#       → Add these 2 lines right before "# ── 1. Validation ──" (line ~29):
+#
+#           from subscriptions.services.subscription_service import check_contract_limit
+#           check_contract_limit(creator)
+#
+#       Full snippet + explanation: ghadi_works/for_contracts_app/
+#
+#   [2] Ask audit team to add 2 EventTypes to audit/models.py:
+#       SUBSCRIPTION_EXPIRED   = 'SUBSCRIPTION_EXPIRED',   'اشتراك انتهى'
+#       CONTRACT_LIMIT_CHECKED = 'CONTRACT_LIMIT_CHECKED',  'فُحص حد العقود'
+#       Full snippet: ghadi_works/for_audit_app/event_types.py
+#       Until they add these, both functions silently skip the audit write (try/except).
+#
+#   [3] Schedule expire_subscriptions to run nightly:
+#       python manage.py expire_subscriptions
+#       Add to server cron or Celery beat later in the project.
+# =============================================================================
+
 import logging
 from datetime import timedelta
 
@@ -9,6 +56,7 @@ from subscriptions.models import SubscriptionPlan, UserSubscription
 logger = logging.getLogger(__name__)
 
 
+# ── Called from: accounts/views.py → sign_up() ────────────────────────────────
 def assign_free_plan(user) -> UserSubscription:
     """
     Assign the Free plan to a newly registered user.
@@ -34,6 +82,7 @@ def assign_free_plan(user) -> UserSubscription:
     )
 
 
+# ── Called from: everywhere that needs to know the user's current plan ─────────
 def get_user_subscription(user) -> UserSubscription | None:
     """
     Return the active UserSubscription for the given user, or None.
@@ -47,6 +96,7 @@ def get_user_subscription(user) -> UserSubscription | None:
     )
 
 
+# ── Internal helper — prefer check_contract_limit() for user-facing enforcement ─
 def increment_contracts_used(user) -> UserSubscription:
     """
     Atomically increment contracts_used on the user's active subscription.
@@ -77,6 +127,7 @@ def increment_contracts_used(user) -> UserSubscription:
         return sub
 
 
+# ── Called from: payments/services/moyasar_service.py → handle_callback() ──────
 def activate_subscription(user, plan: SubscriptionPlan) -> UserSubscription:
     """
     Activate or upgrade a user's subscription after a successful payment.
@@ -132,6 +183,8 @@ def activate_subscription(user, plan: SubscriptionPlan) -> UserSubscription:
     return sub
 
 
+# ── PENDING INTEGRATION: needs to be wired into contracts/services/contract_workflow.py
+# ── See FUTURE WORK [1] at the top of this file for the exact lines to add ─────
 def check_contract_limit(user) -> UserSubscription:
     """
     Enforce contract creation limits before allowing a new contract.
@@ -188,6 +241,7 @@ def check_contract_limit(user) -> UserSubscription:
     return sub
 
 
+# ── Run via: python manage.py expire_subscriptions (nightly cron later) ────────
 def check_and_expire_subscriptions() -> int:
     """
     Expire all active subscriptions whose expires_at timestamp has passed.
@@ -228,6 +282,7 @@ def check_and_expire_subscriptions() -> int:
     return count
 
 
+# ── Available for future use (e.g. admin-initiated plan change) ────────────────
 def upgrade_subscription(user, new_plan: SubscriptionPlan) -> UserSubscription:
     """
     Switch the user's subscription to a new plan.

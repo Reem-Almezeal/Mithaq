@@ -1,3 +1,19 @@
+# =============================================================================
+# subscriptions/urls.py   →   mounted at: api/subscriptions/ (Mithaq/urls.py)
+#
+# Full URL map:
+#   PUBLIC  (no auth):
+#       GET  /api/subscriptions/plans/
+#       GET  /api/subscriptions/plans-page/           ← HTML page
+#       GET  /api/subscriptions/checkout-page/<id>/   ← HTML page
+#
+#   AUTHENTICATED:
+#       GET  /api/subscriptions/status/
+#       GET  /api/subscriptions/upgrade-options/
+#
+# FUTURE WORK: add more URLs here as new views are built
+# =============================================================================
+
 from django.urls import path
 
 from . import views
