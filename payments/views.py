@@ -1,3 +1,36 @@
+# =============================================================================
+# payments/views.py
+# OWNED BY: Ghadi
+#
+# PAYMENT FLOW (full picture):
+#
+#   1. User opens /api/subscriptions/checkout-page/<plan_id>/  (HTML page)
+#   2. User clicks "ادفع الآن" → JS fetch() POSTs to:
+#        POST /api/payments/checkout/<plan_id>/    ← CheckoutView
+#        → Creates PaymentRecord (status=INITIATED)
+#        → Calls Moyasar API → gets payment URL
+#        → Returns { "payment_url": "https://..." }
+#   3. JS redirects browser to Moyasar hosted payment page
+#   4. User completes payment on Moyasar
+#   5. Moyasar redirects browser to:
+#        GET /api/payments/callback/?id=<moyasar_id>&status=paid
+#        → PaymentCallbackView re-fetches from Moyasar API (never trusts params)
+#        → Verifies amount, updates PaymentRecord to PAID
+#        → Calls activate_subscription(user, plan) in subscription_service.py
+#        → Redirects to /api/payments/success/ or /api/payments/failed/
+#   6. Success/failed HTML pages shown to user
+#
+# AUTH NOTE:
+#   CheckoutView requires IsAuthenticated (JWT or session).
+#   PaymentCallbackView is PUBLIC — Moyasar calls it, not the user.
+#   Sessions work here because SessionAuthentication is in DRF settings.
+#
+# FUTURE WORK (Ghadi):
+#   - Add a PaymentHistoryView: GET /api/payments/history/ → list user's PaymentRecords
+#   - Handle refunds when Moyasar sends REFUNDED status
+#   - Add webhook endpoint if Moyasar supports server-side webhooks
+# =============================================================================
+
 import logging
 
 from django.shortcuts import render, redirect

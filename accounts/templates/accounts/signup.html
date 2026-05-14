@@ -1,7 +1,11 @@
-{% extends "base.html" %}
+{% extends "core/base.html" %}
 {% load static %}
 
 {% block title %}ميثاق — إنشاء حساب{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/accountscss.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="auth-body">
