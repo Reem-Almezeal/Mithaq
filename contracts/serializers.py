@@ -6,7 +6,8 @@ from signatures.models import Signature
 
 
 class ClauseSerializer(serializers.ModelSerializer):
-    id = serializers.UUIDField(read_only=True)
+    id          = serializers.UUIDField(read_only=True)
+    order_index = serializers.IntegerField(read_only=True)  # ← أضف read_only=True
 
     class Meta:
         model  = ContractClause
