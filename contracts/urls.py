@@ -5,6 +5,8 @@ from contracts.views import (
     VersionListView, VersionDetailView,
 )
 
+from audit.views import AuditTimelineView
+
 urlpatterns = [
     # Contract CRUD
     path('', ContractListCreateView.as_view()),
@@ -18,4 +20,10 @@ urlpatterns = [
     path('<uuid:pk>/approve/', ApproveView.as_view()),
     path('<uuid:pk>/sign/', SignView.as_view()),
     path('<uuid:pk>/cancel/', CancelView.as_view()),
+    
+    # Audit timeline
+    path('<uuid:pk>/audit/', AuditTimelineView.as_view()),
 ]
+
+
+
