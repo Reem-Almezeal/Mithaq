@@ -1,7 +1,10 @@
 from django.db import transaction
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 from contracts.models import Contract, ContractVersion, ContractClause, ContractParty
+from audit.services import log_event
+from audit.constants import EventType
 
 
 class ContractWorkflowService:
@@ -83,6 +86,14 @@ class ContractWorkflowService:
             approval_status = ContractParty.ApprovalStatus.APPROVED,
         )
 
+        # ── 7. سجّل الحدث ─────────────────────────────────────
+        log_event(
+            contract   = contract,
+            event_type = EventType.CONTRACT_CREATED,
+            actor      = creator,
+            payload    = {'title_ar': contract.title_ar},
+        )
+
         return contract
 
     # ──────────────────────────────────────────────────────────
@@ -107,7 +118,7 @@ class ContractWorkflowService:
                 raise ValidationError(f'البند {i} لا يمكن أن يكون فارغاً')
 
         # ── 2. رقم النسخة الجديدة ─────────────────────────────
-        last_version = contract.versions.order_by('-version_number').first()
+        last_version       = contract.versions.order_by('-version_number').first()
         new_version_number = last_version.version_number + 1 if last_version else 1
 
         # ── 3. أنشئ Version جديد ──────────────────────────────
@@ -136,16 +147,26 @@ class ContractWorkflowService:
         contract.current_version = new_version
         contract.save(update_fields=['current_version', 'updated_at'])
 
-        # ── 6. أعد موافقات الأطراف (لأن البنود تغيّرت) ────────
+        # ── 6. أعد موافقات الأطراف ────────────────────────────
         contract.parties.exclude(
             role=ContractParty.Role.CREATOR
         ).update(
-            approval_status=ContractParty.ApprovalStatus.PENDING,
-            approved_at=None,
+            approval_status = ContractParty.ApprovalStatus.PENDING,
+            approved_at     = None,
+        )
+
+        # ── 7. سجّل الحدث ─────────────────────────────────────
+        log_event(
+            contract   = contract,
+            event_type = EventType.VERSION_CREATED,
+            actor      = actor,
+            payload    = {'version_number': new_version.version_number},
         )
 
         return new_version
-    
+
+    # ──────────────────────────────────────────────────────────
+
     @staticmethod
     @transaction.atomic
     def approve_contract(contract, party):
@@ -161,12 +182,19 @@ class ContractWorkflowService:
             raise ValidationError('وافقت على العقد مسبقاً')
 
         # ── 2. سجّل الموافقة ──────────────────────────────────
-        from django.utils import timezone
         party.approval_status = ContractParty.ApprovalStatus.APPROVED
-        party.approved_at = timezone.now()
+        party.approved_at     = timezone.now()
         party.save(update_fields=['approval_status', 'approved_at'])
 
-        # ── 3. تحقق إذا كل الأطراف وافقوا ───────────────────
+        # ── 3. سجّل الحدث ─────────────────────────────────────
+        log_event(
+            contract   = contract,
+            event_type = EventType.PARTY_APPROVED,
+            actor      = party.user,
+            payload    = {'party_role': party.role},
+        )
+
+        # ── 4. تحقق إذا كل الأطراف وافقوا ────────────────────
         all_approved = not contract.parties.filter(
             approval_status=ContractParty.ApprovalStatus.PENDING
         ).exists()
@@ -201,6 +229,14 @@ class ContractWorkflowService:
         contract.canonical_hash = canonical_hash
         contract.save(update_fields=['status', 'canonical_hash', 'updated_at'])
 
+        # ── 4. سجّل الحدث ─────────────────────────────────────
+        log_event(
+            contract   = contract,
+            event_type = EventType.CONTRACT_LOCKED,
+            actor      = None,
+            payload    = {'canonical_hash': canonical_hash},
+        )
+
         return contract
 
     # ──────────────────────────────────────────────────────────
@@ -219,5 +255,13 @@ class ContractWorkflowService:
         # ── 2. ألغِ العقد ─────────────────────────────────────
         contract.status = Contract.Status.CANCELLED
         contract.save(update_fields=['status', 'updated_at'])
+
+        # ── 3. سجّل الحدث ─────────────────────────────────────
+        log_event(
+            contract   = contract,
+            event_type = EventType.CONTRACT_CANCELLED,
+            actor      = actor,
+            payload    = {},
+        )
 
         return contract

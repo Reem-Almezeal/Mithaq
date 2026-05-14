@@ -6,16 +6,14 @@ from django.core.exceptions import ValidationError
 
 from contracts.models import Contract, ContractParty
 from signatures.models import Signature
+from audit.services import log_event
+from audit.constants import EventType
 
 
 class SigningService:
 
     @staticmethod
     def compute_canonical_hash(version):
-        """
-        يبني JSON محدد الترتيب من بنود النسخة ثم يحسب SHA-256.
-        نفس البيانات = نفس الـ hash دائماً.
-        """
         clauses = version.clauses.order_by('order_index')
 
         payload = {
@@ -34,23 +32,14 @@ class SigningService:
             ]
         }
 
-        # sort_keys=True ضروري — يضمن نفس الترتيب دائماً
         canonical = json.dumps(payload, ensure_ascii=False, sort_keys=True)
         return hashlib.sha256(canonical.encode('utf-8')).hexdigest()
-
-    # ──────────────────────────────────────────────────────────
 
     @staticmethod
     @transaction.atomic
     def validate_and_sign(contract, signer, submitted_hash, request=None):
-        """
-        contract      = Contract instance
-        signer        = User instance
-        submitted_hash = الـ hash اللي أرسله المستخدم من الـ frontend
-        request       = HttpRequest (اختياري — لتسجيل الـ IP)
-        """
 
-        # ── 1. select_for_update — يمنع race conditions ───────
+        # ── 1. select_for_update ───────────────────────────────
         contract = Contract.objects.select_for_update().get(pk=contract.pk)
 
         # ── 2. تحقق من حالة العقد ─────────────────────────────
@@ -87,14 +76,39 @@ class SigningService:
             user_agent       = user_agent,
         )
 
-        # ── 7. تحقق إذا كل الأطراف وقّعوا ────────────────────
-        total_parties   = contract.parties.count()
+        # ── 7. سجّل الحدث ─────────────────────────────────────
+        log_event(
+            contract   = contract,
+            event_type = EventType.CONTRACT_SIGNED,
+            actor      = signer,
+            payload    = {'signed_hash': submitted_hash},
+        )
+
+        # ── 8. تحقق إذا كل الأطراف وقّعوا ────────────────────
+        total_parties    = contract.parties.count()
         total_signatures = Signature.objects.filter(contract=contract).count()
 
         if total_signatures == total_parties:
             contract.status = Contract.Status.SIGNED
             contract.save(update_fields=['status', 'updated_at'])
 
-            # ← هنا لاحقاً نضيف: trigger blockchain task
+            log_event(
+                contract   = contract,
+                event_type = EventType.ALL_PARTIES_SIGNED,
+                actor      = None,
+                payload    = {'total_signatures': total_signatures},
+            )
+
+            # ── 9. trigger blockchain بعد اكتمال الـ transaction
+            def submit_to_chain():
+                from blockchain.services import ChainTransactionStore
+                store = ChainTransactionStore()
+                store.create_operation(
+                    contract        = contract,
+                    contract_hash   = contract.canonical_hash,
+                    idempotency_key = f'contract-{contract.id}-signed',
+                )
+
+            transaction.on_commit(submit_to_chain)
 
         return signature

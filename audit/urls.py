@@ -1,8 +1,6 @@
 from django.urls import path
-from . import views
-
-app_name = "audit"
+from audit.views import AuditTimelineView
 
 urlpatterns = [
-
+    path('<uuid:pk>/audit/', AuditTimelineView.as_view()),
 ]
