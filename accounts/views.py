@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 
-from subscriptions.services.subscription_service import assign_free_plan
+from subscriptions.services.subscription_service import assign_free_plan, get_user_subscription
 from .models import User
 
 
@@ -100,4 +100,5 @@ def profile(request: HttpRequest):
         messages.success(request, "تم تحديث المعلومات بنجاح", "alert-success")
         return redirect("accounts:profile")
 
-    return render(request, "accounts/profile.html", {"user": user})
+    sub = get_user_subscription(user)
+    return render(request, "accounts/profile.html", {"user": user, "subscription": sub})

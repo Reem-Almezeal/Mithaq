@@ -1,10 +1,10 @@
 from django.db import models
-from django.conf import settings  # ← بدل from django.contrib.auth.models import User
+from django.conf import settings
 
 
 class DashboardSubscription(models.Model):
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,  # ← بدل User
+        settings.AUTH_USER_MODEL, 
         on_delete=models.CASCADE
     )
 
@@ -15,4 +15,4 @@ class DashboardSubscription(models.Model):
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"{self.user.username} - {self.plan_name}"
+     return f"{self.user.email} - {self.plan_name}"

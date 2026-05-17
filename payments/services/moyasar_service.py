@@ -1,3 +1,38 @@
+# =============================================================================
+# payments/services/moyasar_service.py
+# OWNED BY: Ghadi
+#
+# PURPOSE:
+#   All communication with the Moyasar payment API lives here.
+#   Nothing outside this file should ever call the Moyasar API directly.
+#
+# SANDBOX VS PRODUCTION:
+#   Keys are in .env — NEVER put them in code.
+#   Current .env uses sandbox keys (sk_test_... / pk_test_...).
+#   Before going live: replace with production keys from moyasar.com dashboard.
+#   Also update MOYASAR_CALLBACK_URL in .env to the real server domain.
+#
+# MOYASAR AMOUNTS:
+#   Moyasar uses halalas (smallest SAR unit): 1 SAR = 100 halalas.
+#   All amounts are multiplied by 100 before sending to the API.
+#   Example: plan.price = 99 SAR → API receives amount = 9900
+#
+# SECURITY RULES (never break these):
+#   - Never trust callback query params alone — always call verify_payment()
+#     to re-fetch the real status from Moyasar's API.
+#   - Always check amount matches the local PaymentRecord before activating.
+#   - SELECT FOR UPDATE on PaymentRecord prevents double-processing.
+#
+# CALLED FROM:
+#   payments/views.py → CheckoutView.post()         → initiate_payment()
+#   payments/views.py → PaymentCallbackView.get()   → handle_callback()
+#
+# FUTURE WORK (Ghadi):
+#   - Handle REFUNDED status from Moyasar (add to handle_callback)
+#   - Support stcpay and applepay (currently card only)
+#   - Add retry logic if Moyasar API is temporarily down
+# =============================================================================
+
 import logging
 import uuid
 

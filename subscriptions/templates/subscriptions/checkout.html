@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}الدفع — {{ plan.name_ar }} — ميثاق{% endblock %}
+
+{% block content %}
+<section class="bg-brand-bg min-h-screen flex items-center justify-center px-4 py-16">
+  <div class="max-w-md w-full">
+
+    <!-- Back link -->
+    <a href="/api/subscriptions/plans-page/"
+       class="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-black mb-8 transition-colors">
+      <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+      العودة لعرض الخطط
+    </a>
+
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+
+      <!-- Plan summary -->
+      <div class="mb-8">
+        <p class="text-xs text-gray-400 uppercase tracking-widest mb-2">الخطة المختارة</p>
+        <h1 class="text-2xl font-bold text-black mb-1">{{ plan.name_ar }}</h1>
+        <p class="text-sm text-gray-400">{{ plan.name }}</p>
+      </div>
+
+      <!-- Feature list -->
+      <ul class="space-y-2 mb-8 text-sm text-gray-600">
+        <li class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-brand-green shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+          {% if plan.contract_limit == -1 %}عقود غير محدودة{% else %}{{ plan.contract_limit }} عقد{% endif %}
+        </li>
+        <li class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-brand-green shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+          {% if plan.duration_days == 0 %}دائم{% else %}{{ plan.duration_days }} يوماً{% endif %}
+        </li>
+        <li class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-brand-green shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+          توقيع رقمي موثوق
+        </li>
+      </ul>
+
+      <!-- Price summary -->
+      <div class="bg-brand-bg rounded-xl p-5 mb-8 flex justify-between items-center">
+        <span class="text-2xl font-bold text-black">{{ plan.price }} <span class="text-base font-normal text-gray-500">ريال سعودي</span></span>
+        <span class="text-sm text-gray-500">ستدفع</span>
+      </div>
+
+      <!-- Pay button -->
+      <button id="pay-btn" onclick="startCheckout()"
+              class="w-full flex items-center justify-center gap-3 py-3.5 rounded-xl
+                     text-sm font-bold text-white bg-brand-gold hover:bg-brand-gold-dark
+                     active:scale-95 transition-all duration-150 disabled:opacity-60 disabled:cursor-wait">
+        <span id="btn-label">ادفع الآن</span>
+        <svg id="spinner" class="hidden w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
+        </svg>
+      </button>
+
+      <!-- Security note -->
+      <p class="mt-4 text-center text-xs text-gray-400">
+        <svg class="inline w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+        </svg>
+        الدفع يتم عبر بوابة موئسر الآمنة
+      </p>
+
+      <!-- Error message -->
+      <p id="error-msg" class="hidden mt-4 text-center text-sm text-brand-red font-semibold"></p>
+
+    </div>
+  </div>
+</section>
+
+{% block extra_scripts %}
+<script>
+  async function startCheckout() {
+    const btn = document.getElementById('pay-btn');
+    const label = document.getElementById('btn-label');
+    const spinner = document.getElementById('spinner');
+    const errorMsg = document.getElementById('error-msg');
+
+    btn.disabled = true;
+    label.textContent = 'جارٍ التحضير...';
+    spinner.classList.remove('hidden');
+    errorMsg.classList.add('hidden');
+
+    const csrfToken = document.cookie.split(';')
+      .map(c => c.trim())
+      .find(c => c.startsWith('csrftoken='))
+      ?.split('=')[1] || '';
+
+    try {
+      const response = await fetch('/api/payments/checkout/{{ plan.id }}/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken,
+        },
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.payment_url) {
+        window.location.href = data.payment_url;
+      } else {
+        throw new Error(data.error || 'حدث خطأ غير متوقع');
+      }
+    } catch (err) {
+      btn.disabled = false;
+      label.textContent = 'ادفع الآن';
+      spinner.classList.add('hidden');
+      errorMsg.textContent = err.message;
+      errorMsg.classList.remove('hidden');
+    }
+  }
+</script>
+{% endblock %}
+{% endblock %}

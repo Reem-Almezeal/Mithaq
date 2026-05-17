@@ -7,13 +7,16 @@ from core import views as core_views
 urlpatterns = [
     path("", core_views.home, name="home"),
     path("admin/", admin.site.urls),
-
     path("accounts/", include("accounts.urls")),
-    path("contracts/", include("contracts.urls")),
-    path("milestones/", include("milestones.urls")),
-    path("signatures/", include("signatures.urls")),
-    path("audit/", include("audit.urls")),
+    
+
+    path('api/contracts/', include('contracts.urls')),
+    path('api/audit/', include('audit.urls')),
     path("blockchain/", include("blockchain.urls")),
+    path("signatures/", include("signatures.urls")),
+    
+    path("invitations/", include("invitations.urls")),
+    path("milestones/", include("milestones.urls")),
     path("dashboard/", include("dashboard.urls")),
     path("notifications/", include("notifications.urls")),
     path("api/payments/", include("payments.urls")),
