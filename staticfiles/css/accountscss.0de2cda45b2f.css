@@ -1,0 +1,903 @@
+:root {
+    --color-primary: #061D3B;
+    --color-primary-light: #0A2A55;
+    --color-secondary: #B99655;
+    --color-secondary-light: #F7F0E3;
+    --color-background: #F8F7F4;
+    --color-surface: #FFFFFF;
+    --color-surface-soft: #FAFAF8;
+    --color-border: #E7E3DA;
+    --color-border-strong: #D8D2C7;
+    --color-text-primary: #0A1633;
+    --color-text-secondary: #6F7482;
+    --color-text-muted: #9AA1AE;
+    --color-success: #2F8F55;
+    --color-success-background: #EAF7EF;
+    --color-danger: #B42318;
+    --color-danger-background: #FEECEC;
+    --shadow-sm: 0 4px 12px rgba(6, 29, 59, 0.04);
+    --shadow-md: 0 10px 30px rgba(6, 29, 59, 0.08);
+    --shadow-lg: 0 20px 40px rgba(6, 29, 59, 0.12);
+    --radius-sm: 10px;
+    --radius-md: 18px;
+    --radius-lg: 28px;
+}
+
+.signin-page *,
+.signin-card *,
+.signup-page *,
+.profile-card *,
+.profile-header * {
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* ==========================================================
+   Alerts
+   ========================================================== */
+.alert {
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    text-align: right;
+}
+.validation-text {
+    color: #b42318;
+    font-size: 0.85rem;
+    margin-top: 8px;
+    text-align: right;
+}
+
+.alert-success {
+    background: var(--color-success-background);
+    color: var(--color-success);
+}
+
+.alert-danger {
+    background: var(--color-danger-background);
+    color: var(--color-danger);
+}
+
+.alert-warning {
+    background: #fffbeb;
+    color: #92400e;
+}
+
+/* ==========================================================
+   Auth Navbar (signin/signup pages only — not dashboard)
+   ========================================================== */
+.auth-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 64px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    z-index: 50;
+}
+
+.nav-container {
+    width: 100%;
+    max-width: 1152px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+}
+
+.signin-back-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    color: var(--color-surface) !important;
+    background: var(--color-primary);
+    padding: 8px 20px;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+    transition: background 0.15s, transform 0.1s;
+}
+
+.signin-back-link i {
+    font-size: 1.1rem;
+    transition: transform 0.2s ease;
+}
+
+.signin-back-link:hover {
+    background: var(--color-primary-light);
+    color: var(--color-surface) !important;
+}
+
+.signin-back-link:hover i {
+    transform: translateX(4px);
+}
+
+.signin-back-link:active {
+    transform: scale(0.97);
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo-img {
+    height: 52px;
+    width: auto;
+    display: block;
+    transition: transform 0.2s ease;
+}
+
+.logo-img:hover {
+    transform: scale(1.02);
+}
+
+/* ==========================================================
+   Sign In Page
+   ========================================================== */
+.signin-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 20px 80px;
+}
+
+.signin-card {
+    background-color: var(--color-surface);
+    width: 100%;
+    max-width: 560px;
+    padding: 32px 56px;  /* قللي padding من فوق وتحت */
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+}
+
+.signin-title {
+    font-size: 1.6rem;  /* قللي شوي */
+    color: var(--color-text-primary);
+    font-weight: 700;
+    text-align: center;
+     margin-bottom: 6px;
+}
+
+.signin-subtitle {
+    font-size: 0.95rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+/* ==========================================================
+   Form Fields
+   ========================================================== */
+.signin-field {
+    margin-bottom: 12px;  
+}
+
+.signin-field label {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--color-text-primary);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.signin-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.signin-input-wrapper input {
+    width: 100%;
+    padding: 14px 45px 14px 45px;
+    border: 1px solid rgba(6, 29, 59, 0.2);
+    border-radius: var(--radius-sm);
+    background-color: #EEF2FF;
+    color: var(--color-text-primary);
+    font-size: 0.95rem;
+    font-family: 'Cairo', system-ui, sans-serif;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.signin-input-wrapper input::placeholder {
+    color: rgba(6, 29, 59, 0.35);
+}
+
+.signin-input-wrapper input:hover {
+    border-color: var(--color-secondary);
+}
+
+.signin-input-wrapper input:focus {
+    border-color: var(--color-secondary);
+    background-color: #EEF2FF;
+    box-shadow: 0 0 0 3px rgba(185, 150, 85, 0.1);
+}
+
+.signin-input-wrapper .field-icon {
+    position: absolute;
+    right: 16px;
+    color: var(--color-text-muted);
+    font-size: 1.2rem;
+}
+
+.signin-toggle-password {
+    position: absolute;
+    left: 16px;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: color 0.2s ease;
+}
+
+.signin-toggle-password:hover {
+    color: var(--color-primary);
+}
+
+/* ==========================================================
+   Options Row
+   ========================================================== */
+.signin-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+}
+
+.signin-remember {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+}
+
+.signin-remember input[type="checkbox"] {
+    accent-color: var(--color-primary);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.signin-forgot {
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+
+.signin-forgot:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+}
+
+/* ==========================================================
+   Buttons & Divider
+   ========================================================== */
+.signin-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--color-primary);
+    color: var(--color-surface);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: 'Cairo', system-ui, sans-serif;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.signin-btn:hover {
+    background-color: var(--color-primary-light);
+}
+
+.signin-btn:active {
+    transform: scale(0.99);
+}
+
+.signin-divider {
+    text-align: center;
+    margin: 14px 0;
+    position: relative;
+}
+
+.signin-divider::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: var(--color-border);
+    z-index: 1;
+}
+
+.signin-divider span {
+    background-color: var(--color-surface);
+    padding: 0 15px;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    position: relative;
+    z-index: 2;
+}
+
+.signin-google-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-primary);
+    font-weight: 500;
+    font-size: 0.95rem;
+    font-family: 'Cairo', system-ui, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.signin-google-btn:hover {
+    background-color: var(--color-surface-soft);
+    border-color: var(--color-border-strong);
+}
+
+/* ==========================================================
+   Bottom Links & Trust
+   ========================================================== */
+.signin-bottom-link {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+}
+
+.signin-bottom-link a {
+    color: var(--color-primary);
+    font-weight: 600;
+    margin-right: 4px;
+}
+
+.signin-bottom-link a:hover {
+    text-decoration: underline;
+}
+
+.signin-trust {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 0.85rem;
+    color: var(--color-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-weight: 500;
+}
+
+.signin-trust i {
+    font-size: 1.1rem;
+}
+
+/* ==========================================================
+   Sign Up — two-column field rows
+   ========================================================== */
+.signup-row {
+    display: flex;
+    gap: 16px;
+}
+
+.signup-row .signin-field {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ==========================================================
+   Responsive
+   ========================================================== */
+@media (max-width: 480px) {
+    .signin-card {
+        padding: 28px 20px;
+    }
+
+    .signin-title {
+        font-size: 1.5rem;
+    }
+
+    .nav-container {
+        padding: 0 20px;
+    }
+
+    .signup-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
+
+/* ==========================================================
+   Profile Page — Mithaq
+   ========================================================== */
+
+
+/* Fix profile page top spacing */
+.profile-breadcrumb {
+    margin-top: 20px;
+}
+
+.profile-breadcrumb .active {
+    color: var(--color-text-primary);
+    font-weight: 500;
+}
+
+.profile-breadcrumb i {
+    font-size: 0.75rem;
+}
+
+.profile-header {
+    margin-bottom: 16px;
+    direction: rtl;
+}
+
+.profile-header-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 4px;
+}
+
+.profile-header-subtitle {
+    font-size: 0.88rem;
+    color: var(--color-text-secondary);
+}
+
+/* Profile Card */
+.profile-card {
+    background: var(--color-surface);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    padding: 22px;
+    direction: rtl;
+}
+
+/* Card Header */
+.profile-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.profile-card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.profile-edit-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 20px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    font-family: 'Cairo', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.profile-edit-btn:hover {
+    background: var(--color-surface-soft);
+    border-color: var(--color-border-strong);
+}
+
+/* Card Body */
+.profile-card-body {
+    display: flex;
+    gap: 48px;
+    align-items: flex-start;
+}
+
+/* Avatar Column */
+.profile-avatar-col {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-avatar-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--color-secondary);
+}
+
+.profile-avatar-initials {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: var(--color-secondary-light);
+    border: 3px solid var(--color-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--color-secondary);
+}
+
+.avatar-camera-btn {
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+    width: 32px;
+    height: 32px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--color-surface);
+    font-size: 14px;
+    box-shadow: var(--shadow-sm);
+}
+
+/* Info Column */
+.profile-info-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* Info Row */
+.profile-info-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.profile-info-row:last-child {
+    border-bottom: none;
+}
+
+.profile-info-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 160px;
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+.profile-info-label i {
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+}
+
+.profile-info-inputs {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+}
+
+
+
+.profile-info-inputs .profile-input:first-child {
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.profile-info-inputs .profile-input:last-child {
+    border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+}
+
+/* Profile Input */
+.profile-input {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 14px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    color: var(--color-text-primary);
+    background: transparent;
+    direction: rtl;
+    text-align: right;
+    outline: none;
+    transition: all 0.2s;
+    font-family: 'Cairo', sans-serif;
+    cursor: default;
+}
+
+.profile-input[disabled] {
+    background: transparent;
+    border-color: transparent;
+    cursor: default;
+}
+
+.profile-input[readonly] {
+    background: transparent;
+    border-color: transparent;
+    cursor: default;
+    color: var(--color-text-secondary);
+}
+
+.profile-input.active {
+    background: var(--color-surface-soft);
+    border-color: var(--color-border);
+    cursor: text;
+}
+
+.profile-input.active:focus {
+    border-color: var(--color-secondary);
+    background: var(--color-surface);
+    box-shadow: 0 0 0 3px rgba(185, 150, 85, 0.1);
+}
+
+/* Save Row */
+.profile-save-row {
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+.profile-save-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 28px;
+    background: var(--color-primary);
+    border: none;
+    border-radius: var(--radius-sm);
+    color: var(--color-surface);
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: 'Cairo', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.profile-save-btn:hover {
+    background: var(--color-primary-light);
+}
+
+/* Alerts */
+.alert {
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    text-align: right;
+}
+
+.alert-success {
+    background: var(--color-success-background);
+    color: var(--color-success);
+}
+
+.alert-danger {
+    background: var(--color-danger-background);
+    color: var(--color-danger);
+}
+
+.alert-warning {
+    background: #fffbeb;
+    color: #92400e;
+}
+
+/* ==========================================================
+   Responsive
+   ========================================================== */
+@media (max-width: 768px) {
+    .profile-card-body {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .profile-avatar-col {
+        align-self: center;
+    }
+
+    .profile-info-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .profile-info-label {
+        min-width: unset;
+    }
+
+    .profile-info-inputs {
+        flex-direction: column;
+        width: 100%;
+    }
+}
+
+
+/* ==========================================================
+   Settings Page
+   ========================================================== */
+
+/* Settings list container */
+.settings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Single settings item */
+.settings-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 18px;
+    background: var(--color-surface);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-border);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    direction: rtl;
+}
+
+.settings-item:hover {
+    border-color: var(--color-secondary);
+    box-shadow: var(--shadow-sm);
+    transform: translateX(-2px);
+}
+
+/* Icon circle */
+.settings-item-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--color-secondary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1rem;
+    color: var(--color-secondary);
+}
+
+/* Text content */
+.settings-item-content {
+    flex: 1;
+}
+
+/* Item title */
+.settings-item-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 2px;
+}
+
+/* Item description */
+.settings-item-desc {
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+}
+
+/* Arrow icon */
+.settings-item-arrow {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+/* Danger item — logout */
+.settings-item-danger:hover {
+    border-color: var(--color-danger);
+}
+
+.settings-item-icon-danger {
+    background: var(--color-danger-background);
+    color: var(--color-danger);
+}
+
+.settings-item-title-danger {
+    color: var(--color-danger);
+}
+
+/* ==========================================================
+   Password Tips
+   ========================================================== */
+.password-tip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.password-tip:last-child {
+    border-bottom: none;
+}
+
+.password-tip i {
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+
+.privacy-item h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.privacy-item h4 i {
+    color: var(--color-secondary);
+    font-size: 1rem;
+}
+
+
+.faq-answer {
+    display: none;
+    padding: 0 0 16px;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+}
+
+.faq-item.open .faq-answer {
+    display: block;
+}
+
+.faq-item {
+    border: 1px solid var(--color-secondary);
+    margin-bottom: 8px;
+    padding: 0 16px;
+    cursor: pointer;
+}
+
+.faq-question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    transition: color 0.2s;
+}
