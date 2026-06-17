@@ -1,3 +1,5 @@
+import logging
+
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.urls import reverse
@@ -6,6 +8,8 @@ from django.utils.html import strip_tags
 from twilio.rest import Client
 
 from .models import SigningInvitation
+
+logger = logging.getLogger('invitations')
 
 
 class SigningInvitationService:
@@ -115,7 +119,7 @@ class SigningInvitationService:
         try:
             num_sent = email.send()
         except Exception as smtp_err:
-            print("SMTP ERROR in send_email:", smtp_err)
+            logger.error("SMTP ERROR in send_email: %s", smtp_err, exc_info=True)
             return {
                 "success": False,
                 "provider": "gmail",
@@ -124,7 +128,7 @@ class SigningInvitationService:
             }
 
         if num_sent == 0:
-            print("SMTP WARNING: email.send() returned 0 for", invitation.signer_email)
+            logger.warning("email.send() returned 0 for %s", invitation.signer_email)
             return {
                 "success": False,
                 "provider": "gmail",
@@ -132,7 +136,7 @@ class SigningInvitationService:
                 "error": "لم يتم إرسال البريد الإلكتروني",
             }
 
-        print("EMAIL SENT OK to:", invitation.signer_email)
+        logger.info("EMAIL SENT OK to: %s", invitation.signer_email)
         return {
             "success": True,
             "provider": "gmail",
@@ -193,6 +197,6 @@ class SigningInvitationService:
             return invitation
 
         except Exception as error:
-            print("EMAIL SEND ERROR:",error)
+            logger.error("EMAIL SEND ERROR: %s", error, exc_info=True)
             invitation.mark_as_failed(str(error))
             return invitation

@@ -345,6 +345,34 @@ button:disabled {
 .hidden {
     display: none !important;
 }
+.identity-disclaimer {
+    background: var(--gold-soft);
+    border: 1px solid rgba(185, 150, 85, 0.35);
+    border-right: 4px solid var(--gold);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin: 20px 0;
+}
+
+.identity-disclaimer strong {
+    display: block;
+    color: var(--navy);
+    font-size: 15px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.identity-disclaimer p {
+    margin: 0 0 10px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+.identity-disclaimer p:last-child {
+    margin-bottom: 0;
+}
+
 
 @media (max-width: 766px) {
     .verify-page {
@@ -368,6 +396,18 @@ button:disabled {
     .verify-card,
     .verified-card {
         padding: 24px 18px;
+    }
+        .identity-disclaimer {
+        padding: 16px;
+    }
+
+    .identity-disclaimer strong {
+        font-size: 14px;
+    }
+
+    .identity-disclaimer p {
+        font-size: 12px;
+        line-height: 1.8;
     }
 }
 
@@ -408,5 +448,20 @@ button:disabled {
         width: 68px;
         height: 68px;
         font-size: 1.7rem;
+    }
+        .identity-disclaimer {
+        padding: 14px;
+        margin: 16px 0;
+        border-radius: 12px;
+    }
+
+    .identity-disclaimer strong {
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+    .identity-disclaimer p {
+        font-size: 11px;
+        line-height: 1.7;
     }
 }

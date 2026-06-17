@@ -43,20 +43,18 @@ SECRET_KEY = config('SECRET_KEY')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool, default=False)
 
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    'kept-justify-wincing.ngrok-free.dev',
-]
+# Comma-separated list in .env, e.g.:
+# ALLOWED_HOSTS=localhost,127.0.0.1,myserver.com
+_allowed_hosts_env = config('ALLOWED_HOSTS', default='localhost,127.0.0.1')
+ALLOWED_HOSTS = [h.strip() for h in _allowed_hosts_env.split(',') if h.strip()]
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://kept-justify-wincing.ngrok-free.dev',
-]
+# Comma-separated list in .env, e.g.:
+# CSRF_TRUSTED_ORIGINS=https://myserver.com,https://kept-justify-wincing.ngrok-free.dev
+_csrf_origins_env = config('CSRF_TRUSTED_ORIGINS', default='https://kept-justify-wincing.ngrok-free.dev')
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in _csrf_origins_env.split(',') if o.strip()]
 
 
 # Application definition
@@ -214,4 +212,38 @@ MOYASAR_CALLBACK_URL    = config('MOYASAR_CALLBACK_URL', default='http://localho
 
 LOGIN_URL = "accounts:sign_in"
 LOGIN_REDIRECT_URL = "accounts:profile"
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'mail_file': {
+            'class': 'logging.FileHandler',
+            'filename': str(BASE_DIR / 'logs' / 'mail.log'),
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django.core.mail': {
+            'handlers': ['console', 'mail_file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'invitations': {
+            'handlers': ['console', 'mail_file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}
 
