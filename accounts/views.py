@@ -1,9 +1,13 @@
+import logging
+
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import transaction, IntegrityError
+
+logger = logging.getLogger(__name__)
 
 # (added by ghadi: imports two subscription functions used in sign_up and profile)
 from subscriptions.services.subscription_service import assign_free_plan, get_user_subscription
@@ -119,6 +123,10 @@ def sign_up(request: HttpRequest):
                 messages.error(request, "البريد الإلكتروني مستخدم مسبقاً", "alert-danger")
             else:
                 messages.error(request, "حدث خطأ أثناء إنشاء الحساب، يرجى المحاولة مرة أخرى", "alert-danger")
+            return render(request, "accounts/signup.html", {"form_data": form_data})
+        except Exception as e:
+            logger.error("Unexpected error during sign_up for %s: %s", email, e, exc_info=True)
+            messages.error(request, "حدث خطأ أثناء إنشاء الحساب، يرجى المحاولة مرة أخرى", "alert-danger")
             return render(request, "accounts/signup.html", {"form_data": form_data})
 
         login(request, user)
