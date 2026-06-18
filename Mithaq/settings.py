@@ -215,6 +215,9 @@ MOYASAR_CALLBACK_URL    = config('MOYASAR_CALLBACK_URL', default='http://localho
 LOGIN_URL = "accounts:sign_in"
 LOGIN_REDIRECT_URL = "accounts:profile"
 
+# Create logs/ directory at startup so FileHandler never fails on the server
+(BASE_DIR / 'logs').mkdir(exist_ok=True)
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -236,11 +239,19 @@ LOGGING = {
         },
     },
     'loggers': {
+        # Captures every unhandled exception that produces a 500 response
+        'django.request': {
+            'handlers': ['console', 'mail_file'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        # Django's internal SMTP debug output
         'django.core.mail': {
             'handlers': ['console', 'mail_file'],
             'level': 'DEBUG',
             'propagate': False,
         },
+        # Our own invitation email/SMS sending code
         'invitations': {
             'handlers': ['console', 'mail_file'],
             'level': 'DEBUG',
