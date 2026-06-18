@@ -16,9 +16,10 @@ from invitations.models import SigningInvitation
 from contracts.models import ContractParty
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+import resend
+from django.conf import settings
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.tokens import default_token_generator
-from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils.encoding import force_bytes, force_str
@@ -331,13 +332,16 @@ def forgot_password(request: HttpRequest):
 إذا لم تطلب ذلك يمكنك تجاهل هذه الرسالة.
 """
 
-            send_mail(
-                subject,
-                message,
-                None,
-                [user.email],
-                fail_silently=False,
-            )
+            try:
+                resend.api_key = settings.RESEND_API_KEY
+                resend.Emails.send({
+                    "from": settings.DEFAULT_FROM_EMAIL,
+                    "to": [user.email],
+                    "subject": subject,
+                    "text": message,
+                })
+            except Exception as resend_err:
+                logger.error("Resend ERROR in forgot_password: %s", resend_err, exc_info=True)
 
         messages.success(
             request,

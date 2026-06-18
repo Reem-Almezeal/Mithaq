@@ -27,12 +27,11 @@ TWILIO_AUTH_TOKEN = config("TWILIO_AUTH_TOKEN", default="")
 TWILIO_PHONE_NUMBER = config("TWILIO_PHONE_NUMBER", default="")
 
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = config("EMAIL_HOST")
-EMAIL_PORT = config("EMAIL_PORT", cast=int)
-EMAIL_HOST_USER = config("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
-EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
+# ── Email — Resend (HTTPS API, works on all hosting providers) ───────────────
+# SMTP settings removed — Resend bypasses SMTP entirely via its HTTPS API.
+RESEND_API_KEY = config("RESEND_API_KEY")
+# TODO: Replace with a verified custom domain email once a domain
+# is added and verified on https://resend.com/domains
 DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
 
 SITE_URL = config("SITE_URL", default="http://127.0.0.1:8000")

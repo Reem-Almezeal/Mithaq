@@ -1,7 +1,7 @@
 import logging
 
+import resend
 from django.conf import settings
-from django.core.mail import EmailMultiAlternatives
 from django.urls import reverse
 from django.utils.html import strip_tags
 
@@ -91,14 +91,15 @@ class SigningInvitationService:
         if not invitation.signer_email:
             return {
                 "success": False,
-                "provider": "gmail","message_id": "",
+                "provider": "resend",
+                "message_id": "",
                 "error": "لا يوجد بريد إلكتروني لهذا الطرف",
             }
 
         if not secret:
             return {
                 "success": False,
-                "provider": "gmail",
+                "provider": "resend",
                 "message_id": "",
                 "error": "رابط الدعوة غير متوفر. يرجى إعادة إنشاء الدعوة",
             }
@@ -107,40 +108,31 @@ class SigningInvitationService:
         html_content = SigningInvitationService.build_email_html(invitation, secret)
         text_content = strip_tags(html_content)
 
-        email = EmailMultiAlternatives(
-            subject=subject,
-            body=text_content,
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            to=[invitation.signer_email],
-        )
-
-        email.attach_alternative(html_content, "text/html")
+        resend.api_key = settings.RESEND_API_KEY
 
         try:
-            num_sent = email.send()
-        except Exception as smtp_err:
-            logger.error("SMTP ERROR in send_email: %s", smtp_err, exc_info=True)
+            response = resend.Emails.send({
+                "from": settings.DEFAULT_FROM_EMAIL,
+                "to": [invitation.signer_email],
+                "subject": subject,
+                "html": html_content,
+                "text": text_content,
+            })
+        except Exception as resend_err:
+            logger.error("Resend ERROR in send_email: %s", resend_err, exc_info=True)
             return {
                 "success": False,
-                "provider": "gmail",
+                "provider": "resend",
                 "message_id": "",
-                "error": str(smtp_err),
+                "error": str(resend_err),
             }
 
-        if num_sent == 0:
-            logger.warning("email.send() returned 0 for %s", invitation.signer_email)
-            return {
-                "success": False,
-                "provider": "gmail",
-                "message_id": "",
-                "error": "لم يتم إرسال البريد الإلكتروني",
-            }
-
-        logger.info("EMAIL SENT OK to: %s", invitation.signer_email)
+        message_id = getattr(response, "id", "") or ""
+        logger.info("EMAIL SENT OK via Resend to: %s (id=%s)", invitation.signer_email, message_id)
         return {
             "success": True,
-            "provider": "gmail",
-            "message_id": "gmail-sent",
+            "provider": "resend",
+            "message_id": message_id,
             "error": "",
         }
 

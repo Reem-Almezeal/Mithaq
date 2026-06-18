@@ -1,1 +1,114 @@
 INFO 2026-06-18 02:56:59,505 services EMAIL SENT OK to: reemk7832@gmail.com
+ERROR 2026-06-18 04:21:32,496 services Resend ERROR in send_email: The gmail.com domain is not verified. Please, add and verify your domain on https://resend.com/domains
+Traceback (most recent call last):
+  File "C:\Users\reemk\Downloads\Twiuqe_Project_learn\Project\Mithaq\invitations\services.py", line 114, in send_email
+    response = resend.Emails.send({
+        "from": settings.DEFAULT_FROM_EMAIL,
+    ...<3 lines>...
+        "text": text_content,
+    })
+  File "C:\Users\reemk\AppData\Local\Programs\Python\Python314\Lib\site-packages\resend\emails\_emails.py", line 286, in send
+    ).perform_with_content()
+      ~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\reemk\AppData\Local\Programs\Python\Python314\Lib\site-packages\resend\request.py", line 49, in perform_with_content
+    resp = self.perform()
+  File "C:\Users\reemk\AppData\Local\Programs\Python\Python314\Lib\site-packages\resend\request.py", line 37, in perform
+    raise_for_code_and_type(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        code=data.get("statusCode") or 500,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        headers=self._response_headers,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\reemk\AppData\Local\Programs\Python\Python314\Lib\site-packages\resend\exceptions.py", line 270, in raise_for_code_and_type
+    raise ResendError(
+    ...<5 lines>...
+    )
+resend.exceptions.ResendError: The gmail.com domain is not verified. Please, add and verify your domain on https://resend.com/domains
+ERROR 2026-06-18 04:25:52,453 services Resend ERROR in send_email: The gmail.com domain is not verified. Please, add and verify your domain on https://resend.com/domains
+Traceback (most recent call last):
+  File "C:\Users\reemk\Downloads\Twiuqe_Project_learn\Project\Mithaq\invitations\services.py", line 114, in send_email
+    response = resend.Emails.send({
+        "from": settings.DEFAULT_FROM_EMAIL,
+    ...<3 lines>...
+        "text": text_content,
+    })
+  File "C:\Users\reemk\AppData\Local\Programs\Python\Python314\Lib\site-packages\resend\emails\_emails.py", line 286, in send
+    ).perform_with_content()
+      ~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\reemk\AppData\Local\Programs\Python\Python314\Lib\site-packages\resend\request.py", line 49, in perform_with_content
+    resp = self.perform()
+  File "C:\Users\reemk\AppData\Local\Programs\Python\Python314\Lib\site-packages\resend\request.py", line 37, in perform
+    raise_for_code_and_type(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        code=data.get("statusCode") or 500,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        headers=self._response_headers,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\reemk\AppData\Local\Programs\Python\Python314\Lib\site-packages\resend\exceptions.py", line 270, in raise_for_code_and_type
+    raise ResendError(
+    ...<5 lines>...
+    )
+resend.exceptions.ResendError: The gmail.com domain is not verified. Please, add and verify your domain on https://resend.com/domains
+ERROR 2026-06-18 04:35:54,674 services Resend ERROR in send_email: The yourdomain.com domain is not verified. Please, add and verify your domain on https://resend.com/domains
+Traceback (most recent call last):
+  File "C:\Users\reemk\Downloads\Twiuqe_Project_learn\Project\Mithaq\invitations\services.py", line 114, in send_email
+    response = resend.Emails.send({
+        "from": settings.DEFAULT_FROM_EMAIL,
+    ...<3 lines>...
+        "text": text_content,
+    })
+  File "C:\Users\reemk\AppData\Local\Programs\Python\Python314\Lib\site-packages\resend\emails\_emails.py", line 286, in send
+    ).perform_with_content()
+      ~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\reemk\AppData\Local\Programs\Python\Python314\Lib\site-packages\resend\request.py", line 49, in perform_with_content
+    resp = self.perform()
+  File "C:\Users\reemk\AppData\Local\Programs\Python\Python314\Lib\site-packages\resend\request.py", line 37, in perform
+    raise_for_code_and_type(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        code=data.get("statusCode") or 500,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        headers=self._response_headers,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\reemk\AppData\Local\Programs\Python\Python314\Lib\site-packages\resend\exceptions.py", line 270, in raise_for_code_and_type
+    raise ResendError(
+    ...<5 lines>...
+    )
+resend.exceptions.ResendError: The yourdomain.com domain is not verified. Please, add and verify your domain on https://resend.com/domains
+ERROR 2026-06-18 04:41:01,821 services Resend ERROR in send_email: You can only send testing emails to your own email address (reemk.2110053@gmail.com). To send emails to other recipients, please verify a domain at resend.com/domains, and change the `from` address to an email using this domain.
+Traceback (most recent call last):
+  File "C:\Users\reemk\Downloads\Twiuqe_Project_learn\Project\Mithaq\invitations\services.py", line 114, in send_email
+    response = resend.Emails.send({
+        "from": "Mithaq Platform <onboarding@resend.dev>",
+    ...<3 lines>...
+        "text": text_content,
+    })
+  File "C:\Users\reemk\AppData\Local\Programs\Python\Python314\Lib\site-packages\resend\emails\_emails.py", line 286, in send
+    ).perform_with_content()
+      ~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\reemk\AppData\Local\Programs\Python\Python314\Lib\site-packages\resend\request.py", line 49, in perform_with_content
+    resp = self.perform()
+  File "C:\Users\reemk\AppData\Local\Programs\Python\Python314\Lib\site-packages\resend\request.py", line 37, in perform
+    raise_for_code_and_type(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        code=data.get("statusCode") or 500,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        headers=self._response_headers,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\reemk\AppData\Local\Programs\Python\Python314\Lib\site-packages\resend\exceptions.py", line 270, in raise_for_code_and_type
+    raise ResendError(
+    ...<5 lines>...
+    )
+resend.exceptions.ResendError: You can only send testing emails to your own email address (reemk.2110053@gmail.com). To send emails to other recipients, please verify a domain at resend.com/domains, and change the `from` address to an email using this domain.
+INFO 2026-06-18 05:27:56,221 services EMAIL SENT OK via Resend to: reemk3836@gmail.com (id=a9b177b6-0f60-4382-a262-260471eb4ef4)
