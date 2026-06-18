@@ -254,3 +254,5 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+EMAIL_TIMEOUT = 20
