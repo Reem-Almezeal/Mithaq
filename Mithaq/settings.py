@@ -14,11 +14,9 @@ from pathlib import Path
 from decouple import config
 import os
 import dj_database_url
-
 from decouple import config
 
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -28,11 +26,8 @@ TWILIO_AUTH_TOKEN = config("TWILIO_AUTH_TOKEN", default="")
 TWILIO_PHONE_NUMBER = config("TWILIO_PHONE_NUMBER", default="")
 
 
-# ── Email — Resend (HTTPS API, works on all hosting providers) ───────────────
-# SMTP settings removed — Resend bypasses SMTP entirely via its HTTPS API.
 RESEND_API_KEY = config("RESEND_API_KEY")
-# TODO: Replace with a verified custom domain email once a domain
-# is added and verified on https://resend.com/domains
+
 DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
 
 SITE_URL = config("SITE_URL", default="http://127.0.0.1:8000")
@@ -40,19 +35,14 @@ SITE_URL = config("SITE_URL", default="http://127.0.0.1:8000")
 
 SECRET_KEY = config('SECRET_KEY')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool, default=False)
 
-# Comma-separated list in .env, e.g.:
-# ALLOWED_HOSTS=localhost,127.0.0.1,myserver.com
+
 _allowed_hosts_env = config('ALLOWED_HOSTS', default='localhost,127.0.0.1')
 ALLOWED_HOSTS = [h.strip() for h in _allowed_hosts_env.split(',') if h.strip()]
 
-# Comma-separated list in .env, e.g.:
-# CSRF_TRUSTED_ORIGINS=https://myserver.com,https://kept-justify-wincing.ngrok-free.dev
+
 _csrf_origins_env = config('CSRF_TRUSTED_ORIGINS', default='https://kept-justify-wincing.ngrok-free.dev')
 CSRF_TRUSTED_ORIGINS = [o.strip() for o in _csrf_origins_env.split(',') if o.strip()]
 
@@ -67,10 +57,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    # Third-party
+
     'rest_framework',
     'rest_framework_simplejwt',
-    # Local
+
     'core',
     'accounts',
     'audit',
@@ -91,7 +81,6 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -112,8 +101,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-
-                # Added by Remas — unread notifications count for all pages
                 'notifications.context_processors.unread_notifications',
             ],
         },
@@ -123,8 +110,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Mithaq.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
+
 
 
 
@@ -136,8 +122,6 @@ DATABASES = {
 }
 
 
-# Password validation
-# https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -155,8 +139,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/6.0/topics/i18n/
+
 
 LANGUAGE_CODE = 'en-us'
 
@@ -167,8 +150,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
+
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -179,22 +161,22 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
-# Django REST Framework
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.SessionAuthentication',  # (added by ghadi: lets session-logged-in users call DRF API endpoints from browser template pages like checkout.html)
+        'rest_framework.authentication.SessionAuthentication',  
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
-    # (added by ghadi: rate-limits the public verification API to prevent hash-enumeration abuse)
+    
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '60/hour',   # 60 requests per hour per IP for unauthenticated users
+        'anon': '60/hour', 
     },
 }
 
-# SimpleJWT
+
 from datetime import timedelta
 
 SIMPLE_JWT = {
@@ -202,12 +184,9 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
-# Added by Remas — custom user model to replace Django's default auth.User
+
 AUTH_USER_MODEL = 'accounts.User'
 
-# (added by ghadi: Moyasar payment gateway config — Saudi-licensed, sandbox keys in .env)
-# Moyasar payment gateway (Saudi-licensed)
-# Note: .env uses MOYASAR_SECRET_KEY — mapped here to MOYASAR_API_KEY for internal consistency
 MOYASAR_API_KEY         = config('MOYASAR_SECRET_KEY')
 MOYASAR_PUBLISHABLE_KEY = config('MOYASAR_PUBLISHABLE_KEY')
 
@@ -217,7 +196,7 @@ MOYASAR_CALLBACK_URL    = config('MOYASAR_CALLBACK_URL', default='http://localho
 LOGIN_URL = "accounts:sign_in"
 LOGIN_REDIRECT_URL = "accounts:profile"
 
-# Create logs/ directory at startup so FileHandler never fails on the server
+
 (BASE_DIR / 'logs').mkdir(exist_ok=True)
 
 LOGGING = {
@@ -241,25 +220,25 @@ LOGGING = {
         },
     },
     'loggers': {
-        # Captures every unhandled exception that produces a 500 response
+    
         'django.request': {
             'handlers': ['console', 'mail_file'],
             'level': 'ERROR',
             'propagate': False,
         },
-        # Django's internal SMTP debug output
+   
         'django.core.mail': {
             'handlers': ['console', 'mail_file'],
             'level': 'DEBUG',
             'propagate': False,
         },
-        # Our own invitation email/SMS sending code
+  
         'invitations': {
             'handlers': ['console', 'mail_file'],
             'level': 'DEBUG',
             'propagate': False,
         },
-        # Password reset and other account email flows
+
         'accounts': {
             'handlers': ['console', 'mail_file'],
             'level': 'DEBUG',
