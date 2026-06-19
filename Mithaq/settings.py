@@ -256,6 +256,12 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': False,
         },
+        # Password reset and other account email flows
+        'accounts': {
+            'handlers': ['console', 'mail_file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
     },
 }
 

@@ -340,12 +340,14 @@ def forgot_password(request: HttpRequest):
                     "subject": subject,
                     "text": message,
                 })
+                logger.info("Password reset email sent via Resend to: %s", user.email)
             except Exception as resend_err:
-                logger.error("Resend ERROR in forgot_password: %s", resend_err, exc_info=True)
+                logger.error("Resend ERROR in forgot_password for %s: %s", user.email, resend_err, exc_info=True)
 
         messages.success(
             request,
-            "إذا كان البريد الإلكتروني مسجلًا لدينا فسيتم إرسال رابط إعادة تعيين كلمة المرور."
+            "إذا كان البريد الإلكتروني مسجلًا لدينا فسيتم إرسال رابط إعادة تعيين كلمة المرور.",
+            "alert-success",
         )
 
         return redirect("accounts:forgot_password")
