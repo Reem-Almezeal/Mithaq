@@ -190,7 +190,7 @@ def profile(request: HttpRequest):
 
 
 @login_required(login_url="accounts:sign_in")
-def settings(request: HttpRequest):
+def account_settings(request: HttpRequest):
     return render(request, "accounts/settings.html", {"user": request.user})
 
 
@@ -320,27 +320,54 @@ def forgot_password(request: HttpRequest):
 
             subject = "إعادة تعيين كلمة المرور - ميثاق"
 
-            message = f"""
-مرحبًا {user.full_name or user.email},
+            display_name = user.full_name or user.email
 
-تم استلام طلب لإعادة تعيين كلمة المرور الخاصة بحسابك في منصة ميثاق.
+            html_content = f"""
+            <div dir="rtl" style="font-family:Arial,Tahoma,sans-serif;background:#24231f;padding:32px;">
+                <div style="max-width:620px;margin:auto;background:#1f2023;border:1px solid #3a3528;border-radius:22px;padding:34px;text-align:center;">
 
-اضغط على الرابط التالي لتعيين كلمة مرور جديدة:
+                    <h1 style="color:#ffffff;margin:0 0 18px;">إعادة تعيين كلمة المرور</h1>
 
-{reset_link}
+                    <p style="color:#b8bdc9;line-height:1.9;font-size:17px;">
+                        مرحبًا {display_name}، تلقينا طلبًا لإعادة تعيين كلمة مرور حسابك في منصة ميثاق.
+                    </p>
 
-إذا لم تطلب ذلك يمكنك تجاهل هذه الرسالة.
-"""
+                    <a href="{reset_link}"
+                    style="display:inline-block;margin-top:24px;background:#dbe6ff;color:#111827;text-decoration:none;padding:16px 30px;border-radius:16px;font-weight:bold;font-size:18px;">
+                        إعادة تعيين كلمة المرور
+                    </a>
+
+                    <p style="color:#8f95a3;font-size:13px;line-height:1.8;margin-top:26px;">
+                        إذا لم يعمل الزر، انسخ الرابط التالي وافتحه في المتصفح:<br>
+                        <span style="color:#dbe6ff;word-break:break-all;">{reset_link}</span>
+                    </p>
+
+                    <p style="color:#6b7280;font-size:12px;margin-top:20px;">
+                        إذا لم تطلب إعادة تعيين كلمة المرور، يمكنك تجاهل هذه الرسالة بأمان.
+                    </p>
+                </div>
+            </div>
+            """
+
+            text_content = (
+                f"مرحبًا {display_name}،\n\n"
+                f"تلقينا طلبًا لإعادة تعيين كلمة مرور حسابك في منصة ميثاق.\n\n"
+                f"اضغط على الرابط التالي لإعادة تعيين كلمة المرور:\n{reset_link}\n\n"
+                f"إذا لم تطلب ذلك يمكنك تجاهل هذه الرسالة."
+            )
+
+            resend.api_key = settings.RESEND_API_KEY
 
             try:
-                resend.api_key = settings.RESEND_API_KEY
-                resend.Emails.send({
+                response = resend.Emails.send({
                     "from": settings.DEFAULT_FROM_EMAIL,
                     "to": [user.email],
                     "subject": subject,
-                    "text": message,
+                    "html": html_content,
+                    "text": text_content,
                 })
-                logger.info("Password reset email sent via Resend to: %s", user.email)
+                message_id = getattr(response, "id", "") or ""
+                logger.info("Password reset email sent via Resend to: %s (id=%s)", user.email, message_id)
             except Exception as resend_err:
                 logger.error("Resend ERROR in forgot_password for %s: %s", user.email, resend_err, exc_info=True)
 

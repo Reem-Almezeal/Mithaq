@@ -112,3 +112,21 @@ Traceback (most recent call last):
     )
 resend.exceptions.ResendError: You can only send testing emails to your own email address (reemk.2110053@gmail.com). To send emails to other recipients, please verify a domain at resend.com/domains, and change the `from` address to an email using this domain.
 INFO 2026-06-18 05:27:56,221 services EMAIL SENT OK via Resend to: reemk3836@gmail.com (id=a9b177b6-0f60-4382-a262-260471eb4ef4)
+ERROR 2026-06-19 22:08:44,049 views Resend ERROR in forgot_password for reemk3836@gmail.com: 'function' object has no attribute 'RESEND_API_KEY'
+Traceback (most recent call last):
+  File "C:\Users\reemk\Downloads\Twiuqe_Project_learn\Project\Mithaq\accounts\views.py", line 336, in forgot_password
+    resend.api_key = settings.RESEND_API_KEY
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'function' object has no attribute 'RESEND_API_KEY'
+ERROR 2026-06-19 22:12:29,908 log Internal Server Error: /accounts/forgot-password/
+Traceback (most recent call last):
+  File "C:\Users\reemk\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\reemk\AppData\Local\Programs\Python\Python314\Lib\site-packages\django\core\handlers\base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\reemk\Downloads\Twiuqe_Project_learn\Project\Mithaq\accounts\views.py", line 359, in forgot_password
+    resend.api_key = settings.RESEND_API_KEY
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'function' object has no attribute 'RESEND_API_KEY'
+INFO 2026-06-19 22:18:39,312 views Password reset email sent via Resend to: reemk3836@gmail.com (id=ae7cd5c2-c27f-45a2-a462-0187bbaed6f1)
+INFO 2026-06-19 22:18:45,526 views Password reset email sent via Resend to: reemk3836@gmail.com (id=0cb84d94-d7e8-4603-b161-e7df2b893b0f)
