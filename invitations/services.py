@@ -170,6 +170,39 @@ class SigningInvitationService:
             "error": "",
         }
 
+    @staticmethod
+    def link_invitation_to_existing_user(invitation):
+        """
+        If a registered user already has the invitation's signer_email,
+        link the invitation to that user immediately and ensure a
+        ContractParty record exists so the contract appears in their list.
+        """
+        if not invitation.signer_email or invitation.invitee_user_id:
+            return
+
+        from django.contrib.auth import get_user_model
+        from contracts.models import ContractParty
+
+        User = get_user_model()
+        try:
+            user = User.objects.get(email__iexact=invitation.signer_email)
+        except User.DoesNotExist:
+            return
+
+        invitation.invitee_user = user
+        invitation.save(update_fields=["invitee_user", "updated_at"])
+
+        ContractParty.objects.get_or_create(
+            contract=invitation.contract,
+            user=user,
+            defaults={"role": invitation.contract_role},
+        )
+        logger.info(
+            "Invitation %s auto-linked to existing user %s at creation time",
+            invitation.reference_number,
+            user.email,
+        )
+
     @classmethod
     def send_existing_invitation(cls, invitation, secret):
         message = cls.build_email_text(invitation, secret)

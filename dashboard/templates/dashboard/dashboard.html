@@ -70,7 +70,7 @@ progress, and quick access to the main contract management features.
                 </div>
                 <div>
                     <span>تاريخ الانتهاء</span>
-                    <strong>{{ current_subscription.end_date|date:"d M Y" }}</strong>
+                    <strong>{{ current_subscription.expires_at|date:"d M Y" }}</strong>
                 </div>
             </div>
             <div class="mithaq-subscription-progress">
@@ -258,7 +258,7 @@ progress, and quick access to the main contract management features.
                             </div>
                         </td>
                         <td>
-                            <a href="#" class="mithaq-table-btn">عرض</a>
+                            <a href="{% url 'contracts:contract_detail' contract.pk %}" class="mithaq-table-btn">عرض</a>
                         </td>
                     </tr>
                     {% empty %}

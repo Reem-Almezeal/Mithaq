@@ -47,9 +47,11 @@ def contract_list_view(request: HttpRequest):
         'cancelled':         Contract.Status.CANCELLED,
     }
 
-    # All contracts for this user
+    # All contracts for this user: creator, party member, or signing invitee
     qs = Contract.objects.filter(
-        Q(creator=request.user) | Q(parties__user=request.user)
+        Q(creator=request.user)
+        | Q(parties__user=request.user)
+        | Q(signing_invitations__invitee_user=request.user)
     ).distinct()
 
     # Apply filters
@@ -229,6 +231,7 @@ class ContractListCreateView(APIView):
             invited_party.save(update_fields=["invitation"])
 
             SigningInvitationService.send_existing_invitation(invitation, secret)
+            SigningInvitationService.link_invitation_to_existing_user(invitation)
 
         # Notify the creator that their contract was created and invitations sent
         print(f"[Contract created] id={contract.id} — sending CONTRACT_CREATED to creator user_id={user.id}")

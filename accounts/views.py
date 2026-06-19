@@ -152,6 +152,19 @@ def sign_in(request: HttpRequest):
 
         if user:
             login(request, user)
+            # Link any invitations sent to this email before the account existed
+            pending_invitations = SigningInvitation.objects.filter(
+                signer_email__iexact=user.email,
+                invitee_user__isnull=True,
+            )
+            for inv in pending_invitations:
+                inv.invitee_user = user
+                inv.save(update_fields=["invitee_user", "updated_at"])
+                ContractParty.objects.get_or_create(
+                    contract=inv.contract,
+                    user=user,
+                    defaults={"role": inv.contract_role},
+                )
             messages.success(request, "مرحباً بك!", "alert-success")
             next_url = request.GET.get("next")
             return redirect(next_url if next_url else "accounts:profile")

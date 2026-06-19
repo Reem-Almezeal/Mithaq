@@ -52,3 +52,15 @@ class UserSubscription(models.Model):
     def can_create_contract(self) -> bool:
         """Returns True if the user is allowed to create another contract."""
         return self.plan.contract_limit == -1 or self.contracts_used < self.plan.contract_limit
+
+    @property
+    def remaining_contracts(self):
+        if self.plan.contract_limit == -1:
+            return "∞"
+        return max(0, self.plan.contract_limit - self.contracts_used)
+
+    @property
+    def usage_percentage(self):
+        if self.plan.contract_limit <= 0:
+            return 0
+        return min(100, round(self.contracts_used / self.plan.contract_limit * 100))

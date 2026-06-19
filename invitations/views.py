@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render, redirect
 from django.views.decorators.http import require_POST
-from contracts.models import Contract, ContractVersion, ContractModificationRequest, ContractClause
+from contracts.models import Contract, ContractParty, ContractVersion, ContractModificationRequest, ContractClause
 from .models import SigningInvitation
 from .services import SigningInvitationService
 import hashlib
@@ -22,8 +22,10 @@ from django.urls import reverse
 def _as_bool(value):
     return value in [True, "true", "True", "1", 1, "on"]
 
-@login_required
 def access_invitation(request: HttpRequest, secret):
+    if not request.user.is_authenticated:
+        return redirect("accounts:sign_in")
+
     secret_hash = SigningInvitation.hash_secret(secret)
 
     invitation = get_object_or_404(
@@ -59,6 +61,11 @@ def access_invitation(request: HttpRequest, secret):
     is_new_link = not invitation.invitee_user
     if is_new_link:
         invitation.link_to_user(request.user)
+        ContractParty.objects.get_or_create(
+            contract=invitation.contract,
+            user=request.user,
+            defaults={"role": invitation.contract_role},
+        )
 
     if invitation.status == SigningInvitation.Status.SENT:
         invitation.mark_as_viewed()
@@ -758,6 +765,7 @@ def add_contract_invitation(request: HttpRequest, contract_id):
     )
 
     new_invitation = SigningInvitationService.send_existing_invitation(new_invitation, secret)
+    SigningInvitationService.link_invitation_to_existing_user(new_invitation)
 
     if new_invitation.status == SigningInvitation.Status.FAILED:
         messages.warning(request, "تمت إضافة الطرف ولكن فشل إرسال البريد الإلكتروني — تحقق من إعدادات SMTP في وحدة التحكم.")
